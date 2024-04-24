@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import CongoBasin.*;
 
 /**
  *
@@ -57,11 +58,13 @@ public class Login extends javax.swing.JFrame {
                 // Do something with username and password
                 System.out.println("Username: " + username);
                 System.out.println("Password: " + password);
-                // Close the current window
-                frame.dispose();
-                
-                // Open another window
-                openNextWindow(username, password);
+                 if (Main.login(username, password) == true){
+                    System.out.println("Opening window");
+                    // Close the current window
+                    frame.dispose();
+                    // Open another window
+                    openNextWindow(username, password);
+                }
             }
         });
         // Add the backgroundPanel to the frame
