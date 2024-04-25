@@ -1,3 +1,7 @@
+/*
+ * 
+ * 
+ */
 package CongoBasin;
 import java.sql.*;
 import java.util.*;
@@ -11,7 +15,14 @@ public class User {
   String[] bData = new String[list.size()];
  
 
-  //MW
+
+  /**
+   * Constructor that initializes the user's name, password, and admin status
+   * @param n The username
+   * @param pH The password
+   * @param iA The user's admin status
+   * By Matthew W
+   */
   public User(String n, String pH, String iA) {
     username = n;
     hashedPass = Integer.toString(pH.hashCode());
@@ -23,17 +34,11 @@ public class User {
     }
   }  
 
-  //MattK
-  public boolean checkPass(String pass){
-    if (hashedPass.equals(Integer.toString(pass.hashCode()))){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-
-  //MW
+  /**
+   * 
+   * @return An array containing the username, hashed password, and admin status
+   * By Matthew K
+   */
   public String[] getUserData() {
     String[] temp = new String[2];
 
@@ -44,6 +49,24 @@ public class User {
     return temp;
   }
 
+  /**
+   * Checks if the inputed password is the same 
+   * @param pass
+   * @return A boolean checking if the inputed password is correct
+   * By Matthew K
+   */
+  public boolean checkPass(String pass){
+    if (hashedPass.equals(Integer.toString(pass.hashCode()))){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+
+  //MW
+  
   public void addHasRead(String bookName, String rating) {
     list.add(bookName + "," + rating);
     
@@ -57,6 +80,10 @@ public class User {
 
  class Dashboard{
    //MattK
+   /**
+    * Randomly selects 10 books
+    * @return An ArrayList of 10 random books
+    */
    public static ArrayList<Book> generate(){
      ArrayList<Book> temp = new ArrayList<Book>();
    
