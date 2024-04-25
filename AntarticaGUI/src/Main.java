@@ -1,6 +1,7 @@
 package CongoBasin;
 import java.sql.*;
 import java.util.*;
+import java.io.*;
 public class Main {
   
   static ArrayList<Book> books = new ArrayList<Book>();
@@ -9,7 +10,16 @@ public class Main {
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException{
+
+    File myFile = new File("UserInfo.csv");
+    Scanner readFile = new Scanner(myFile);
+
+    //Read in all the usernames, passwords, and admin statuses
+    while (readFile.hasNext()){
+      String temp[] = readFile.nextLine().split(",");
+      users.add(new User(temp[0], temp[1], temp[1]));
+    }
     //Put sql connections/call methods here
     
     //add user's index to map
