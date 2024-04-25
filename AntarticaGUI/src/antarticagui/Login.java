@@ -73,7 +73,7 @@ public class Login extends javax.swing.JFrame {
         Dimension imageSize = backgroundPanel.getImageSize();
         frame.setSize(imageSize);
         
-        frame.setResizable(false); // Prevent resizing
+        frame.setResizable(true); // Prevent resizing
         frame.setLocationRelativeTo(null); // Center the frame on the screen
         
         frame.pack();
