@@ -9,7 +9,7 @@ import java.io.*;
 public class Main {
   
   static ArrayList<Book> books = new ArrayList<Book>();
-  
+  static ArrayList<String> bookData = new ArrayList<String>();
   static ArrayList<User> users = new ArrayList<User>();
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   
@@ -72,5 +72,28 @@ public class Main {
       }
     
   }
+
+  public static void getBook() throws IOException{
+		  File file = new File("BookData");
+		  
+		  Scanner inputFile = new Scanner(file);
+		  int counter = 0;
+		  
+		  
+		  while(inputFile.hasNext()) {
+          	bookData.add(inputFile.nextLine());
+      	}
+		  
+		  inputFile.close();
+		  
+		  inputFile = new Scanner(file);
+		  String[] line = new String[counter];
+		  for (int j = 0; j < counter; j++) {
+			  line[j] = inputFile.nextLine();
+		  }
+		  
+		  inputFile.close();
+		 
+	  }
   
 }
