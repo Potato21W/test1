@@ -5,6 +5,10 @@
 package antarticagui;
 
 import java.awt.Dimension;
+import java.lang.Math;
+import java.awt.Font;
+import java.io.*;
+import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -12,18 +16,20 @@ import javax.swing.JFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import CongoBasin.*;
 
 /**
  *
- * @author matthew
+ * 
  */
 public class Login extends javax.swing.JFrame {
+	
+	
 
     /**
      * Creates new form GUI
      */
-    public Login() {
+    public Login() throws IOException{
+    	
         JFrame frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -50,8 +56,8 @@ public class Login extends javax.swing.JFrame {
         // Add ActionListener to the login button
         jButton1.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Retrieve username and password
+            public void actionPerformed(ActionEvent e){
+            	 // Retrieve username and password
                 String username = jTextField1.getText();
                 String password = new String(jPasswordField1.getPassword());
                 
@@ -63,7 +69,14 @@ public class Login extends javax.swing.JFrame {
                     // Close the current window
                     frame.dispose();
                     // Open another window
-                    openNextWindow(username, password);
+						try {
+							System.out.println("works");
+							openNextWindow(username, password);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					
                 }
             }
         });
@@ -73,14 +86,15 @@ public class Login extends javax.swing.JFrame {
         Dimension imageSize = backgroundPanel.getImageSize();
         frame.setSize(imageSize);
         
-        frame.setResizable(true); // Prevent resizing
+        frame.setResizable(false); // Prevent resizing
         frame.setLocationRelativeTo(null); // Center the frame on the screen
         
         frame.pack();
         frame.setVisible(true);
     }
     
-     private void openNextWindow(String username, String password) {
+     private void openNextWindow(String username, String password) throws IOException {
+
         // Create and configure the next window
         JFrame nextFrame = new JFrame("Welcome " + username);
         nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,6 +116,29 @@ public class Login extends javax.swing.JFrame {
         int buttonY = 700;
         jButton1.setBounds(buttonX, buttonY, buttonSize.width, buttonSize.height);
         backgroundPanel.add(jButton1);
+        
+        PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
+        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+        
+        System.setOut(outStream);
+        
+        Main.getBook();
+        
+        String[] split = null;
+        
+        Collections.shuffle(Main.bookData);
+        
+        System.out.println("Here are some books you might like:");
+        for (int i = 0; i <= 10; i++) {
+        	
+        	split = Main.bookData.get(i).split(",");
+          	
+          	Book book = new Book(split[0],split[1],split[2],split[3],split[4]);
+          	Main.books.add(book);
+              
+          	System.out.println(book.getData(0) + " By: " + book.getData(1) + " - " + book.getData(4) + "\\5 stars - " + book.getData(2));
+        	 
+        }
         // Add ActionListener to the button
         jButton1.addActionListener(new ActionListener() {
             @Override
