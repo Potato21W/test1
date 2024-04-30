@@ -9,6 +9,7 @@ import java.lang.Math;
 import java.awt.Font;
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -29,6 +30,8 @@ public class Login extends javax.swing.JFrame {
      * Creates new form GUI
      */
     public Login() throws IOException{
+    	
+    	
     	
         JFrame frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,6 +68,7 @@ public class Login extends javax.swing.JFrame {
                 System.out.println("Username: " + username);
                 System.out.println("Password: " + password);
                  if (Main.login(username, password) == true){
+                	 System.out.println("working");
                     System.out.println("Opening window");
                     // Close the current window
                     frame.dispose();
@@ -78,6 +82,18 @@ public class Login extends javax.swing.JFrame {
 						}
 					
                 }
+                 
+                 else {
+                	 //System.out.println("Your username or password doesn't match. Please check and try again");
+              	 frame.dispose();
+               	 try {
+							
+						openNextWindow(username, password);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+					e1.printStackTrace();
+					}
+                 }
             }
         });
         // Add the backgroundPanel to the frame
@@ -139,15 +155,33 @@ public class Login extends javax.swing.JFrame {
           	System.out.println(book.getData(0) + " By: " + book.getData(1) + " - " + book.getData(4) + "\\5 stars - " + book.getData(2));
         	 
         }
+        
+       
         // Add ActionListener to the button
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	
+            	
+            	
                 // Retrieve data
                 String input = jTextField1.getText();
                 
-                // Do something with username and password
-                System.out.println(input);
+//                if (Main.bookData.contains(input)) {
+//                	 printTextField(Main.bookData.get(Main.books.indexOf(input)).getData(3), jTextArea1);
+//                }
+                try {
+					Main.signUp(input.split(",")[0], User.getHash(input.split(",")[1])+"");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                
+                for (Map.Entry<String, Integer> entry : Main.userLookup.entrySet()) {
+            	    System.out.println(entry.getKey() + "/" + entry.getValue());
+            	}
+                
+               
             }
         });
         
@@ -176,6 +210,8 @@ public class Login extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+    	
+    	 
 
         jFrame1 = new javax.swing.JFrame();
         jFrame2 = new javax.swing.JFrame();
@@ -289,9 +325,22 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                try {
+					new Login().setVisible(true);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
+    }
+    
+    public void printTextField(String text, JTextArea textArea) {
+        textArea.setText(text);
+    }
+    
+    public static void getRandBook(int r) {
+    	
     }
 
     private String loginImage = "/resources/LoginPage.png";
