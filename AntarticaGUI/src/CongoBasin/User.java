@@ -75,7 +75,12 @@ public class User {
   public void toDatabase() throws SQLException {
     String stmnt = "INSERT INTO Users (USERNAME, PASSHASH )";
       
-  }  
+  }
+
+  public static int getHash(String input) {
+	  return input.hashCode();
+  }
+  
 }
 
  class Dashboard{
