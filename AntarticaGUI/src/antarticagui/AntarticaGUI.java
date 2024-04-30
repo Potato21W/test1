@@ -4,6 +4,7 @@
  */
 package antarticagui;
 import java.io.*;
+import java.util.Map;
 
 /**
  *
@@ -15,6 +16,11 @@ public class AntarticaGUI {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException{
+    	Main.checkMap();
+    	
+    	for (Map.Entry<String, Integer> entry : Main.userLookup.entrySet()) {
+    	    System.out.println(entry.getKey() + "/" + entry.getValue());
+    	}
         new Login();
     }
     
