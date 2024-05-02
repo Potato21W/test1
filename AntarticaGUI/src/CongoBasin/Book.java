@@ -17,11 +17,13 @@ class Book{
    * @param d The book's description
    * By Kaya
    */
-  public Book (String t, String a, String g, String d){
+  public Book (String t, String a, String g, String d, String r){
     author = a;
     title = t;
     genre = g;
     description = d;
+    avgRating = r;
+    
   }
 
   /**
@@ -56,6 +58,6 @@ class Book{
    * By Kaya
    */
   public String toString(){
-    return title + "\nBy: " + author + "\n\nSynopsis:\n" + description + "\n\n" + avgRating +"/5\n" + genre + "\n";
+    return title + " By: " + author + " Synopsis: " + description + " " + avgRating +"/5 " + genre + " ";
+
   }
-}
