@@ -21,6 +21,7 @@ public class Main {
     //add user's index to map
     for(int i = 0; i < users.size(); i++){
       userLookup.put(users.get(i).getUserData()[0], i);
+      
     }
   }
 
@@ -41,11 +42,14 @@ public class Main {
   
   //Kaya
   public static boolean login (String name, String pass){
-	  
+	  System.out.println(pass.hashCode());
+	  System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
+	  User user = new User("test7", "test7", "false");
 	    if (userLookup.containsKey(name)){
-	      if (users.get(userLookup.get(name)).checkPass(pass)) {
+	      if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
 	        return true;
-	      }
+	      } 
+	    	
 	    }
 	    return false;
 	  }
@@ -114,6 +118,20 @@ public class Main {
 		  }
 		  
 		  fileIn.close();
+	  }
+	  
+	//MattK
+	  /**
+	  Checks if the stored hashed password is the same as the entered password
+	  **/
+	  public static boolean checkPass(User user, String pass){
+		  System.out.println(user);
+	    if (Integer.parseInt(user.getUserData()[1])==(pass.hashCode())){
+	      return true;
+	    }
+	    else{
+	      return false;
+	    }
 	  }
   
 }

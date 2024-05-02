@@ -21,6 +21,11 @@ public class AntarticaGUI {
     	for (Map.Entry<String, Integer> entry : Main.userLookup.entrySet()) {
     	    System.out.println(entry.getKey() + "/" + entry.getValue());
     	}
+    	
+    		System.out.println(Main.users);
+    	
+    		
+    	
         new Login();
     }
     
