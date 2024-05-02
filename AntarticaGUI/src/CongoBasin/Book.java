@@ -39,7 +39,7 @@ class Book{
   * @return the data in a String array
   * By Matthew K
   */
-  public String[] getData(){
+   public String getData(int i){
     String[] temp = new String[5];
     
     temp[0] = author;
@@ -48,7 +48,7 @@ class Book{
     temp[3] = description;
     temp[4] = avgRating;
     
-    return temp;
+    return temp[i];
   }
 
   //will be changed as we work on the GUI
