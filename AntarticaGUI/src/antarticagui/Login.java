@@ -30,7 +30,7 @@ public class Login extends javax.swing.JFrame {
      * Creates new form GUI
      */
     public Login() throws IOException{
-    	
+    	Main.main(null);
     	
     	
         JFrame frame = new JFrame("Login");
@@ -67,7 +67,7 @@ public class Login extends javax.swing.JFrame {
                 // Do something with username and password
                 System.out.println("Username: " + username);
                 System.out.println("Password: " + password);
-                 if (Main.login(username, password) == true){
+                 if (Main.login(username, password)){
                 	 System.out.println("working");
                     System.out.println("Opening window");
                     // Close the current window
@@ -84,15 +84,7 @@ public class Login extends javax.swing.JFrame {
                 }
                  
                  else {
-                	 //System.out.println("Your username or password doesn't match. Please check and try again");
-              	 frame.dispose();
-               	 try {
-							
-						openNextWindow(username, password);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-					e1.printStackTrace();
-					}
+                	 System.out.println("Your username or password doesn't match. Please check and try again");
                  }
             }
         });

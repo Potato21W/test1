@@ -21,6 +21,8 @@ public class Main {
     //add user's index to map
     for(int i = 0; i < users.size(); i++){
       userLookup.put(users.get(i).getUserData()[0], i);
+      
+      System.out.println(sort(books));
     }
   }
 
@@ -39,13 +41,16 @@ public class Main {
     }while(userLookup.containsKey(users));
   }*/
   
-  //Kaya
+  //MattK
   public static boolean login (String name, String pass){
-	  
+	  System.out.println(pass.hashCode());
+	  System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
+	  User user = new User("test7", "test7", "false");
 	    if (userLookup.containsKey(name)){
-	      if (users.get(userLookup.get(name)).checkPass(pass)) {
+	      if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
 	        return true;
-	      }
+	      } 
+	    	
 	    }
 	    return false;
 	  }
@@ -92,6 +97,18 @@ public class Main {
 		  inputFile.close();
 		 
 	  }
+	  
+	  static ArrayList<Book> sort(ArrayList<Book> books){
+		   
+		    
+		    for (int i = 0; i < books.size(); i++){
+		    	books.get(i).getData(4);
+		    }
+		    
+		    Collections.sort(books, Comparator.comparing(Book::getScore).reversed());
+		    
+		    return books;
+		  }
 	  
 	  public static void toMap(String name, String pass) {
 		  User temp = new User(name, pass, "false");

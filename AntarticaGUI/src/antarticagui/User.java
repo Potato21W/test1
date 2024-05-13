@@ -19,7 +19,8 @@ public class User {
   **/
   public User(String n, String pass, String iA) {
     username = n;
-    hashedPass = Integer.toString(pass.hashCode());
+    //hashedPass = Integer.toString(pass.hashCode());
+    hashedPass = pass;
     
     if (iA.equalsIgnoreCase("true")) {
       isAdmin = true;
@@ -28,25 +29,16 @@ public class User {
     }
   }  
 
-  //MattK
-  /**
-  Checks if the stored hashed password is the same as the entered password
-  **/
-  public boolean checkPass(String pass){
-    if (hashedPass.equals(Integer.toString(pass.hashCode()))){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
+  
+  
+  
 
   //MW
   /**
   Gets the stored data
   **/
   public String[] getUserData() {
-	    String[] temp = new String[2];
+	    String[] temp = new String[3];
 
 	    temp[0] = username;
 	    temp[1] = hashedPass;
@@ -64,6 +56,15 @@ public class User {
     
       
   }  
+  
+  
+  public static void addReadBooks(String book, double rating) {
+	  
+  }
+  
+  public static String getReadBooks(User user) {
+	  return null;
+  }
   
   public static int getHash(String input) {
 	  return input.hashCode();
