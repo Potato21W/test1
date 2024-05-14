@@ -17,13 +17,8 @@ public class AntarticaGUI {
      */
     public static void main(String[] args) throws IOException{
     	Main.checkMap();
-    	
-    	for (Map.Entry<String, Integer> entry : Main.userLookup.entrySet()) {
-    	    System.out.println(entry.getKey() + "/" + entry.getValue());
-    	}
-    	
-    		System.out.println(Main.users);
-    	
+    	Main.getBook();
+    	Main.setBooks();
     		
     	
         new Login();
