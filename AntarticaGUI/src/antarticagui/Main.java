@@ -1,3 +1,4 @@
+
 package antarticagui;
 
 import java.io.File;
@@ -18,17 +19,6 @@ public class Main {
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
-<<<<<<< HEAD
-    
-    //add user's index to map
-    for(int i = 0; i < users.size(); i++){
-      userLookup.put(users.get(i).getUserData()[0], i);
-    }
-  }
-
-
-
-=======
 
     getBook();
     setBooks();
@@ -47,56 +37,47 @@ public class Main {
 		  String line = inFile.nextLine();
 		  temp.add(new Book(line.split(",")[0],line.split(",")[1],line.split(",")[2],line.split(",")[3],line.split(",")[4]));
 	  }
+	  inFile.close();
   }
   
->>>>>>> 8790ed4c021b2ecf35a69742edfd91aba7af07c8
   //MattK
   public static boolean login (String name, String pass){
-	
-	User user = new User("test7", "test7", "false");
-	  if (userLookup.containsKey(name)){
-		System.out.println(pass.hashCode());
-	System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
-	System.out.println(Integer.toString(pass.hashCode()));
-		if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
-		  return true;
-		} 
-		  
+	  System.out.println(pass.hashCode());
+	  System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
+	    if (userLookup.containsKey(name)){
+	      if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
+	        return true;
+	      } 
+	    	
+	    }
+	    return false;
 	  }
-	  return false;
-	}
-
   
 	  //Kaya
 	  @SuppressWarnings({ "unlikely-arg-type" })
 	  public static void signUp (String name, String pass) throws IOException{
-
+	      if (userLookup.containsKey(name)){
+	        System.out.println("That username already exists");
+	      }
+	      else{
 	        User temp = new User(name, pass, "false");
 	        users.add(temp);
 	        userLookup.put(name, users.size());
 
-			
-	        FileWriter fw = new FileWriter("/resources/UserInfo.csv", true);
+	        FileWriter fw = new FileWriter("UserInfo.csv", true);
 	        PrintWriter writeFile = new PrintWriter(fw);
 
 	        writeFile.println(name + "," + pass + ",false");
 	        writeFile.close();
+	      }
 	    
 	  }
-	
-	  public static boolean registered(String name){
-		if (userLookup.containsKey(name)){
-			System.out.println("Username taken");
-			return true;
-		}
-		return false;
-	  }
-	
+	  
 	  public static void getBook() throws IOException{
-		  File file = new File("/resources/BookData.csv");
+		  File file = new File("BookData.csv");
 		  
 		  Scanner inputFile = new Scanner(file);
-		  int counter = 0;
+		  //int counter = 0;
 		  
 		  
 		  while(inputFile.hasNext()) {
@@ -112,8 +93,6 @@ public class Main {
 		 
 	  }
 	  
-<<<<<<< HEAD
-=======
 	  
 	  static ArrayList<Book> sort(ArrayList<Book> books){
 		   
@@ -127,7 +106,6 @@ public class Main {
 		    return books;
 		  }
 	  
->>>>>>> 8790ed4c021b2ecf35a69742edfd91aba7af07c8
 	  public static void toMap(String name, String pass) {
 		  User temp = new User(name, pass, "false");
 	        users.add(temp);
@@ -135,23 +113,6 @@ public class Main {
 	  }
 	  
 	  public static void checkMap() throws IOException{
-<<<<<<< HEAD
-		File file = new File("UserInfo.csv");
-		Scanner fileIn = new Scanner(file);
-		String[] in;
-		String line;
-		
-		while (fileIn.hasNext()) {
-			line = fileIn.nextLine();
-			System.out.println(line);
-			in = line.split(",");
-			toMap(in[0],in[1]);
-			
-		}
-		
-		fileIn.close();
-	}
-=======
 		  File file = new File("UserInfo.csv");
 		  Scanner fileIn = new Scanner(file);
 		  String[] in;
@@ -168,6 +129,5 @@ public class Main {
 		  
 		  fileIn.close();
 	  }
->>>>>>> 8790ed4c021b2ecf35a69742edfd91aba7af07c8
   
 }
