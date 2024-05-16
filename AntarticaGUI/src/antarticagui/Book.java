@@ -6,6 +6,7 @@ public class Book{
   private String genre;
   private String description;
   private String avgRating = "0";
+  private int score;
 
   //Kaya
   public Book (String t, String a, String g, String d, String r){
@@ -36,6 +37,10 @@ public class Book{
     temp[4] = avgRating;
     
     return temp[i];
+  }
+  
+  public int getScore() {
+	  return score;
   }
 
   //will be changed as we work on the GUI
