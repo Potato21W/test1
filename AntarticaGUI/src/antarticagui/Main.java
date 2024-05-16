@@ -21,62 +21,55 @@ public class Main {
     //add user's index to map
     for(int i = 0; i < users.size(); i++){
       userLookup.put(users.get(i).getUserData()[0], i);
-      
-      System.out.println(sort(books));
     }
   }
 
-    //Register cycle (Kaya)
-    /*do{
-      //Get from GUI
-      String user = ;
-      String pass;
 
-      if (userLookup.containsValue(user)) {
-        System.out.println("That username already exists");
-      }
-      else{
-        signUp(user, pass);
-      }
-    }while(userLookup.containsKey(users));
-  }*/
-  
+
   //MattK
   public static boolean login (String name, String pass){
-	  System.out.println(pass.hashCode());
-	  System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
-	  User user = new User("test7", "test7", "false");
-	    if (userLookup.containsKey(name)){
-	      if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
-	        return true;
-	      } 
-	    	
-	    }
-	    return false;
+	
+	User user = new User("test7", "test7", "false");
+	  if (userLookup.containsKey(name)){
+		System.out.println(pass.hashCode());
+	System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
+	System.out.println(Integer.toString(pass.hashCode()));
+		if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
+		  return true;
+		} 
+		  
 	  }
+	  return false;
+	}
+
   
 	  //Kaya
 	  @SuppressWarnings({ "unlikely-arg-type" })
 	  public static void signUp (String name, String pass) throws IOException{
-	      if (userLookup.containsKey(name)){
-	        System.out.println("That username already exists");
-	      }
-	      else{
+
 	        User temp = new User(name, pass, "false");
 	        users.add(temp);
 	        userLookup.put(name, users.size());
 
-	        FileWriter fw = new FileWriter("UserInfo.csv", true);
+			
+	        FileWriter fw = new FileWriter("/resources/UserInfo.csv", true);
 	        PrintWriter writeFile = new PrintWriter(fw);
 
 	        writeFile.println(name + "," + pass + ",false");
 	        writeFile.close();
-	      }
 	    
 	  }
-	  
+	
+	  public static boolean registered(String name){
+		if (userLookup.containsKey(name)){
+			System.out.println("Username taken");
+			return true;
+		}
+		return false;
+	  }
+	
 	  public static void getBook() throws IOException{
-		  File file = new File("BookData.csv");
+		  File file = new File("/resources/BookData.csv");
 		  
 		  Scanner inputFile = new Scanner(file);
 		  int counter = 0;
@@ -98,18 +91,6 @@ public class Main {
 		 
 	  }
 	  
-	  static ArrayList<Book> sort(ArrayList<Book> books){
-		   
-		    
-		    for (int i = 0; i < books.size(); i++){
-		    	books.get(i).getData(4);
-		    }
-		    
-		    Collections.sort(books, Comparator.comparing(Book::getScore).reversed());
-		    
-		    return books;
-		  }
-	  
 	  public static void toMap(String name, String pass) {
 		  User temp = new User(name, pass, "false");
 	        users.add(temp);
@@ -117,20 +98,20 @@ public class Main {
 	  }
 	  
 	  public static void checkMap() throws IOException{
-		  File file = new File("UserInfo.csv");
-		  Scanner fileIn = new Scanner(file);
-		  String[] in;
-		  String line;
-		  
-		  while (fileIn.hasNext()) {
-			  line = fileIn.nextLine();
-			  System.out.println(line);
-			  in = line.split(",");
-			  toMap(in[0],in[1]);
-			  
-		  }
-		  
-		  fileIn.close();
-	  }
+		File file = new File("UserInfo.csv");
+		Scanner fileIn = new Scanner(file);
+		String[] in;
+		String line;
+		
+		while (fileIn.hasNext()) {
+			line = fileIn.nextLine();
+			System.out.println(line);
+			in = line.split(",");
+			toMap(in[0],in[1]);
+			
+		}
+		
+		fileIn.close();
+	}
   
 }
