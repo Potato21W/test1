@@ -130,18 +130,15 @@ public class Login extends javax.swing.JFrame {
         
         System.setOut(outStream);
         
-        Main.getBook();
+        Main.sort(Main.books);
         
-        String[] split = null;
-        
-        Collections.shuffle(Main.bookData);
-        
-//        System.out.println("Here are some books you might like:");
-//        for (int i = 0; i <= Main.books.size(); i++) {
-//        	
-//        	System.out.println(Main.books.get(i).toString());
-//        	 
-//        }
+        System.out.println("Here are some books you might like:");
+
+        for (int i = 0; i < Main.books.size(); i++) {
+        	System.out.println(Main.books.get(i).toString());
+        	//System.out.println(Main.books.get(i));
+        	 
+        }
         
        
         // Add ActionListener to the button

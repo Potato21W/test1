@@ -14,30 +14,28 @@ public class Main {
   
   static ArrayList<User> users = new ArrayList<User>();
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
+  static Map<String, Integer> bookLookup = new HashMap<String, Integer>();
   
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
-
-    getBook();
-    setBooks();
     System.out.println("now time to book");
     for (int i = 0; i < 5;i++) {
     	System.out.println(books.size());
     }
   }
 
-  static void setBooks() throws FileNotFoundException{
-	  ArrayList<Book> temp = new ArrayList<Book>();
-	  File file = new File("BookData.csv");
-	  Scanner inFile = new Scanner(file);
-	  
-	  while(inFile.hasNext()) {
-		  String line = inFile.nextLine();
-		  temp.add(new Book(line.split(",")[0],line.split(",")[1],line.split(",")[2],line.split(",")[3],line.split(",")[4]));
-	  }
-  }
-  
+//  static void setBooks() throws FileNotFoundException{
+//	  ArrayList<Book> temp = new ArrayList<Book>();
+//	  File file = new File("BookData.csv");
+//	  Scanner inFile = new Scanner(file);
+//	  
+//	  while(inFile.hasNext()) {
+//		  String line = inFile.nextLine();
+//		  temp.add(new Book(line.split(",")[0],line.split(",")[1],line.split(",")[2],line.split(",")[3],line.split(",")[4]));
+//	  }
+//  }
+//  
   //MattK
   public static boolean login (String name, String pass){
 	  System.out.println(pass.hashCode());
@@ -72,23 +70,39 @@ public class Main {
 	    
 	  }
 	  
-	  public static void getBook() throws IOException{
+	  public static void getBook() throws IOException {
+		  
+		  System.out.println("something");
 		  File file = new File("BookData.csv");
 		  
 		  Scanner inputFile = new Scanner(file);
 		  int counter = 0;
 		  
+		  while(inputFile.hasNext()) {
+			  counter++;
+			  inputFile.nextLine();
+		  }
 		  
+		  inputFile.close();
+		  
+		  System.out.println(counter);
+		  
+		  inputFile = new Scanner(file);
+		  
+		  int count = 0;
 		  while(inputFile.hasNext()) {
 			  String inputLine = inputFile.nextLine(); 
 			  String[] data = inputLine.split(",");
 			  
-			  books.add(new Book(data[0],data[1],data[2],data[3],data[4]));
+			  System.out.println(data[0]);
+			  Book temp = new Book(data[0],data[1],data[2],data[3]);
+			  books.add(temp);
+			  bookLookup.put(data[0], count);			  
+			  count++;
 
       	}
 		  
-		  inputFile.close();
-		  
+		inputFile.close();		  
 		 
 	  }
 	  
@@ -100,15 +114,15 @@ public class Main {
 		    	books.get(i).getData(4);
 		    }
 		    
-		    Collections.sort(books, Comparator.comparing(Book::getScore).reversed());
+		    Collections.sort(books, Comparator.comparing(Book::getRating).reversed());
 		    
 		    return books;
 		  }
 	  
 	  public static void toMap(String name, String pass) {
 		  User temp = new User(name, pass, "false");
-	        users.add(temp);
-	        userLookup.put(name, users.size());
+	      users.add(temp);
+	      userLookup.put(name, users.size());
 	  }
 	  
 	  public static void checkMap() throws IOException{
@@ -122,11 +136,24 @@ public class Main {
 			  System.out.println(line);
 			  in = line.split(",");
 			  toMap(in[0],in[1]);
+			  getRatingData(in[3]);
 			  System.out.println("Working");
 			  
 		  }
 		  
 		  fileIn.close();
 	  }
+	  
+	//different books are separated by !
+	   //rating to the book is separated by ?
+	   public static void getRatingData(String data) {
+		   String[] b = data.split("!");
+		   for(String s : b) {
+			   String[] temp = s.split("]");
+			   System.out.println(temp[0] + bookLookup.get(temp[0]));
+			   int i = bookLookup.get(temp[0]);
+			   books.get(i).addRating(temp[1]);
+		   }
+	   }
   
 }
