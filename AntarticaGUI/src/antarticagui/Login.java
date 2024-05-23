@@ -150,22 +150,21 @@ public class Login extends javax.swing.JFrame {
             	
                 // Retrieve data
                 String input = jTextField1.getText();
-                
-//                if (Main.bookData.contains(input)) {
-//                	 printTextField(Main.bookData.get(Main.books.indexOf(input)).getData(3), jTextArea1);
-//                }
-                try {
-					Main.signUp(input.split(",")[0], User.getHash(input.split(",")[1])+"");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-                
-                for (Map.Entry<String, Integer> entry : Main.userLookup.entrySet()) {
-            	    System.out.println(entry.getKey() + "/" + entry.getValue());
-            	}
-                
-               
+                //split by comma
+                String temp[] = input.split(",");
+                //lookup book
+                if (Main.bookLookup.containsKey(temp[0])) {
+                	Main.rateBook(temp, username);
+                	try {
+						Main.rewriteUsers();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                } else {
+                	System.out.println("404 book doesn't exist");
+                }
+                //add rating for book
             }
         });
         

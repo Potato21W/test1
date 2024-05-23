@@ -40,7 +40,6 @@ public class Main {
   public static boolean login (String name, String pass){
 	  System.out.println(pass.hashCode());
 	  System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
-	  User user = new User("test7", "test7", "false");
 	    if (userLookup.containsKey(name)){
 	      if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
 	        return true;
@@ -57,7 +56,7 @@ public class Main {
 	        System.out.println("That username already exists");
 	      }
 	      else{
-	        User temp = new User(name, pass, "false");
+	        User temp = new User(name, pass, "false", "");
 	        users.add(temp);
 	        userLookup.put(name, users.size());
 
@@ -119,10 +118,10 @@ public class Main {
 		    return books;
 		  }
 	  
-	  public static void toMap(String name, String pass) {
-		  User temp = new User(name, pass, "false");
+	  public static void toMap(String name, String pass, String iA, String ratings) {
+		  User temp = new User(name, pass, iA, ratings);
 	      users.add(temp);
-	      userLookup.put(name, users.size());
+	      userLookup.put(name, users.size() - 1);
 	  }
 	  
 	  public static void checkMap() throws IOException{
@@ -135,7 +134,7 @@ public class Main {
 			  line = fileIn.nextLine();
 			  System.out.println(line);
 			  in = line.split(",");
-			  toMap(in[0],in[1]);
+			  toMap(in[0],in[1],in[2],in[3]);
 			  getRatingData(in[3]);
 			  System.out.println("Working");
 			  
@@ -149,11 +148,33 @@ public class Main {
 	   public static void getRatingData(String data) {
 		   String[] b = data.split("!");
 		   for(String s : b) {
-			   String[] temp = s.split("]");
-			   System.out.println(temp[0] + bookLookup.get(temp[0]));
-			   int i = bookLookup.get(temp[0]);
-			   books.get(i).addRating(temp[1]);
+			   if (!s.equals("")) {
+				   String[] temp = s.split("]");
+				   System.out.println(temp[0] + bookLookup.get(temp[0]));
+				   int i = bookLookup.get(temp[0]);
+				   books.get(i).addRating(temp[1]);
+				   try {
+					rewriteUsers();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			   }
 		   }
+	   }
+	   
+	   public static void rateBook(String[] s, String name) {
+		   users.get(userLookup.get(name)).addRating(s[0]+"]"+s[1]+"!");
+	   }
+	   
+	   public static void rewriteUsers() throws IOException {
+		   PrintWriter pw = new PrintWriter("UserInfo.csv");
+		   String[] temp;
+		   for(User u : users) {
+			   temp = u.getUserData();
+			   pw.println(temp[0]+","+temp[1]+","+temp[2]+","+temp[3]);
+		   }
+		   pw.close();		   
 	   }
   
 }

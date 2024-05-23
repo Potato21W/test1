@@ -7,7 +7,7 @@ public class SQLQueries{
   * By MattK
   * Retrieves the user data from the database and puts it into an arra
   */
-  public static ArrayList<String[]> getUserData(Con nection con) throws SQLException {
+  public static ArrayList<String[]> getUserData(Connection con) throws SQLException {
     String query = "select USERNAME, PASSHASH, BOOKSRATED, RATINGS, ISADMIN, BOOKSREAD from USERS";
     ArrayList<String[]> data = new ArrayList<String[]>();
     String[] temp;
