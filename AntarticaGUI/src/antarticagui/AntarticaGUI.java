@@ -18,8 +18,14 @@ public class AntarticaGUI {
      */
     public static void main(String[] args) throws IOException{
     	Main.checkMap();
+<<<<<<< Updated upstream
     	Main.getBook();
     	Main.setBooks();
+=======
+    	
+    	
+    	
+>>>>>>> Stashed changes
     		
     	
         new Login();
