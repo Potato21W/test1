@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -49,12 +50,20 @@ public class Login extends javax.swing.JFrame {
         jPasswordField1.setBounds(470, 600, 750, 100);
         backgroundPanel.add(jPasswordField1);
         
+        //Actual login button
         jButton1 = new JButton("Login");
         Dimension buttonSize = new Dimension(200, 100); // Example size
-        int buttonX = ((backgroundPanel.getWidth() - buttonSize.width) / 2)- 7;
+        int buttonX = ((backgroundPanel.getWidth() - buttonSize.width) / 2)- 100;
         int buttonY = 700;
         jButton1.setBounds(buttonX, buttonY, buttonSize.width, buttonSize.height);
         backgroundPanel.add(jButton1);
+        
+        jButton2 = new JButton("Register");
+        Dimension registerSize = new Dimension(200, 100); // Example size
+        int registerX = ((backgroundPanel.getWidth() - buttonSize.width) / 2) + 100;
+        int registerY = 700;
+        jButton2.setBounds(registerX, registerY, registerSize.width, registerSize.height);
+        backgroundPanel.add(jButton2);
         
         // Add ActionListener to the login button
         jButton1.addActionListener(new ActionListener() {
@@ -68,14 +77,14 @@ public class Login extends javax.swing.JFrame {
                 System.out.println("Username: " + username);
                 System.out.println("Password: " + password);
                  if (Main.login(username, password)){
-                	 System.out.println("working");
+                	System.out.println("working");
                     System.out.println("Opening window");
                     // Close the current window
                     frame.dispose();
                     // Open another window
 						try {
 							System.out.println("works");
-							openNextWindow(username, password);
+							openHome(username, password);
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -85,9 +94,48 @@ public class Login extends javax.swing.JFrame {
                  
                  else {
                 	 System.out.println("Your username or password doesn't match. Please check and try again");
+
+
                  }
             }
         });
+        
+      //Kaya
+        // Add ActionListener to register button
+        jButton2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                // Retrieve username and password
+                String username = jTextField1.getText();
+                String password = new String(jPasswordField1.getPassword());
+                
+                // Do something with username and password
+                System.out.println("Username: " + username);
+                System.out.println("Password: " + password);
+
+                // Error message if the username is already registered
+                if(Main.registered(username)){
+                    JFrame errorFrame = new JFrame();
+                    JLabel messagLabel = new JLabel("That username already exists");
+                    errorFrame.setSize(300,200);
+                    errorFrame.add(messagLabel);
+                    errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    errorFrame.setVisible(true);
+                }
+                else{
+                    try {
+                        Main.signUp(username, password);
+                        frame.dispose();
+                        openNextWindow(username, password);
+                    } catch (IOException e2) {
+                        e2.printStackTrace();
+                    }
+                    
+                }
+
+            }
+        });
+        
+        
         // Add the backgroundPanel to the frame
         frame.add(backgroundPanel);
         
@@ -130,27 +178,13 @@ public class Login extends javax.swing.JFrame {
         
         System.setOut(outStream);
         
-<<<<<<< Updated upstream
-        Main.sort(Main.books);
-        
-        System.out.println("Here are some books you might like:");
-
-        for (int i = 0; i < Main.books.size(); i++) {
-        	System.out.println(Main.books.get(i).toString());
-        	//System.out.println(Main.books.get(i));
-        	 
-        }
-=======
         Main.getRecBook();
->>>>>>> Stashed changes
         
        
         // Add ActionListener to the button
         jButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
-            	
             	
                 // Retrieve data
                 String input = jTextField1.getText();
@@ -161,8 +195,6 @@ public class Login extends javax.swing.JFrame {
                 	Main.rateBook(temp, username);
                 	try {
 						Main.rewriteUsers();
-<<<<<<< Updated upstream
-=======
 						jTextArea1.setText(null);
 						Main.userLookup.clear();
 						Main.users.clear();
@@ -171,7 +203,6 @@ public class Login extends javax.swing.JFrame {
 						Main.checkMap();
 				    	Main.getRecBook();
 				        
->>>>>>> Stashed changes
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -179,6 +210,7 @@ public class Login extends javax.swing.JFrame {
                 } else {
                 	System.out.println("404 book doesn't exist");
                 }
+               
                 //add rating for book
             }
         });
@@ -199,6 +231,52 @@ public class Login extends javax.swing.JFrame {
         // Display the nextFrame
         nextFrame.setVisible(true);
     }
+     
+     private void openHome(String username, String password) throws IOException {
+
+         // Create and configure the next window
+         JFrame nextFrame = new JFrame("Welcome " + username);
+         nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+         // Create an instance of ImagePanel with the second image
+         ImagePanel backgroundPanel = new ImagePanel(homeImage);
+         
+         jTextArea1 = new JTextArea();
+         jTextArea1.setBounds(225, 332, 1392, 359);
+         backgroundPanel.add(jTextArea1);
+         
+         jButton1 = new JButton("Profile");
+         jButton1.setBounds(5,5,122,122);
+         backgroundPanel.add(jButton1);
+         
+         jButton2 = new JButton("Reccomended");
+         jButton2.setBounds(5,132,122,122);
+         backgroundPanel.add(jButton2);
+         
+         
+         jButton3 = new JButton();
+         jButton3.setBounds(570,200,80,80);
+         backgroundPanel.add(jButton3);
+         
+         jTextField1 = new JTextField("Search");
+         jTextField1.setBounds(655,200,600,80);
+         backgroundPanel.add(jTextField1);
+         // Add the backgroundPanel to the nextFrame
+         nextFrame.add(backgroundPanel);
+         
+         // Set the frame resizable to false
+         nextFrame.setResizable(false);
+         
+         // Set the size of the nextFrame to match the size of the image
+         Dimension imageSize = backgroundPanel.getImageSize();
+         nextFrame.setSize(imageSize);
+         
+         // Center the nextFrame on the screen
+         nextFrame.setLocationRelativeTo(null);
+         
+         // Display the nextFrame
+         nextFrame.setVisible(true);
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -341,9 +419,12 @@ public class Login extends javax.swing.JFrame {
     	
     }
 
+    private String homeImage = "/resources/HomePage.png";
     private String loginImage = "/resources/LoginPage.png";
     private String generalImage = "/resources/GeneralPage.png";
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
@@ -351,6 +432,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

@@ -19,11 +19,7 @@ public class Main {
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
-<<<<<<< Updated upstream
-    System.out.println("now time to book");
-=======
     //System.out.println("now time to book");
->>>>>>> Stashed changes
     for (int i = 0; i < 5;i++) {
     	//System.out.println(books.size());
     }
@@ -53,31 +49,6 @@ public class Main {
 	    return false;
 	  }
   
-<<<<<<< Updated upstream
-	  //Kaya
-	  @SuppressWarnings({ "unlikely-arg-type" })
-	  public static void signUp (String name, String pass) throws IOException{
-	      if (userLookup.containsKey(name)){
-	        System.out.println("That username already exists");
-	      }
-	      else{
-	        User temp = new User(name, pass, "false", "");
-	        users.add(temp);
-	        userLookup.put(name, users.size());
-
-	        FileWriter fw = new FileWriter("UserInfo.csv", true);
-	        PrintWriter writeFile = new PrintWriter(fw);
-
-	        writeFile.println(name + "," + pass + ",false");
-	        writeFile.close();
-	      }
-	    
-	  }
-	  
-	  public static void getBook() throws IOException {
-		  
-		  System.out.println("something");
-=======
   /**
    * Adds a new user
    * @param name
@@ -90,13 +61,12 @@ public class Main {
 	String hashed = pass.hashCode()+"";
     User temp = new User(name, hashed, "false", "sysBook]0!");
     users.add(temp);
-    userLookup.put(name, users.size());
+    userLookup.put(name, users.indexOf(temp));
         rewriteUsers();
         
   }
 	  
 	  public static void getBook() throws IOException {
->>>>>>> Stashed changes
 		  File file = new File("BookData.csv");
 		  
 		  Scanner inputFile = new Scanner(file);
@@ -109,11 +79,7 @@ public class Main {
 		  
 		  inputFile.close();
 		  
-<<<<<<< Updated upstream
-		  System.out.println(counter);
-=======
 		  //System.out.println(counter);
->>>>>>> Stashed changes
 		  
 		  inputFile = new Scanner(file);
 		  
@@ -122,18 +88,10 @@ public class Main {
 			  String inputLine = inputFile.nextLine(); 
 			  String[] data = inputLine.split(",");
 			  
-<<<<<<< Updated upstream
-			  System.out.println(data[0]);
-=======
->>>>>>> Stashed changes
 			  Book temp = new Book(data[0],data[1],data[2],data[3]);
 			  books.add(temp);
 			  bookLookup.put(data[0], count);			  
 			  count++;
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
       	}
 		  
 		inputFile.close();		  
@@ -160,10 +118,13 @@ public class Main {
 	  }
 	  
 	  public static void checkMap() throws IOException{
+	
 		  File file = new File("UserInfo.csv");
 		  Scanner fileIn = new Scanner(file);
 		  String[] in;
 		  String line;
+		  int length = User.userInfoFileLength();
+		  int counter = 0;
 		  
 		  while (fileIn.hasNext()) {
 			  line = fileIn.nextLine();
@@ -171,24 +132,18 @@ public class Main {
 			  in = line.split(",");
 			  toMap(in[0],in[1],in[2],in[3]);
 			  getRatingData(in[3]);
-<<<<<<< Updated upstream
-			  System.out.println("Working");
-=======
 			  counter++;
 			  
-			  if (counter == users.size()) {
+			  if (counter == length) {
 				  fileIn.close();
 				  break;
 			  }
->>>>>>> Stashed changes
 			  
 		  }
 		  
-		  fileIn.close();
+		  
 	  }
 	  
-<<<<<<< Updated upstream
-=======
 	  public static void getRecBook() {
 		  sort(books);
 	        
@@ -201,7 +156,6 @@ public class Main {
 	        //System.out.println("Ratings have been updated");
 	  }
 	  
->>>>>>> Stashed changes
 	//different books are separated by !
 	   //rating to the book is separated by ?
 	   public static void getRatingData(String data) {
@@ -213,11 +167,12 @@ public class Main {
 				   int i = bookLookup.get(temp[0]);
 				   books.get(i).addRating(temp[1]);
 				   try {
-					rewriteUsers();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+						rewriteUsers();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				   
 			   }
 		   }
 	   }
@@ -235,8 +190,6 @@ public class Main {
 		   }
 		   pw.close();		   
 	   }
-<<<<<<< Updated upstream
-=======
 	   
 		
 	  public static boolean registered(String name){
@@ -246,6 +199,7 @@ public class Main {
 		}
 		return false;
 	  }
->>>>>>> Stashed changes
+	  
+	  
   
 }
