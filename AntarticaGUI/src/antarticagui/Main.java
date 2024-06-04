@@ -15,7 +15,9 @@ public class Main {
   static ArrayList<User> users = new ArrayList<User>();
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   static Map<String, Integer> bookLookup = new HashMap<String, Integer>();
-  
+
+  static String bookFile = "C:\\Users\\Dapik\\OneDrive\\Documents\\GitHub\\test1\\AntarticaGUI\\BookData.csv";
+  static String userFile = "C:\\Users\\Dapik\\OneDrive\\Documents\\GitHub\\test1\\AntarticaGUI\\UserInfo.csv";
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
@@ -49,30 +51,37 @@ public class Main {
 	    return false;
 	  }
   
-	  //Kaya
+	 	/**
+	   * Adds a new user
+	   * @param name
+	   * @param pass
+	   * @throws IOException
+	   * By Kaya
+	  */
 	  @SuppressWarnings({ "unlikely-arg-type" })
 	  public static void signUp (String name, String pass) throws IOException{
-	      if (userLookup.containsKey(name)){
-	        System.out.println("That username already exists");
-	      }
-	      else{
-	        User temp = new User(name, pass, "false", "");
-	        users.add(temp);
-	        userLookup.put(name, users.size());
 
-	        FileWriter fw = new FileWriter("UserInfo.csv", true);
-	        PrintWriter writeFile = new PrintWriter(fw);
+		String hashed = pass.hashCode()+""; // Gets the hashed password and converts it into a string
+		User temp = new User(name, hashed, "false", "", ""); // Creates a new user object based on the given input
+		users.add(temp); // Adds the new user to users
+		userLookup.put(name, users.size()); // Adds the new user to userLookup;
 
-	        writeFile.println(name + "," + pass + ",false");
-	        writeFile.close();
-	      }
+		rewriteUsers(); // Updates UserInfo.csv
 	    
+	  }	
+	
+	  public static boolean registered(String name){
+		if (userLookup.containsKey(name)){
+			System.out.println("Username taken");
+			return true;
+		}
+		return false;
 	  }
 	  
 	  public static void getBook() throws IOException {
 		  
 		  System.out.println("something");
-		  File file = new File("BookData.csv");
+		  File file = new File(bookFile);
 		  
 		  Scanner inputFile = new Scanner(file);
 		  int counter = 0;
@@ -118,14 +127,14 @@ public class Main {
 		    return books;
 		  }
 	  
-	  public static void toMap(String name, String pass, String iA, String ratings) {
-		  User temp = new User(name, pass, iA, ratings);
+	  public static void toMap(String name, String pass, String iA, String ratings, String booksRead) {
+		  User temp = new User(name, pass, iA, ratings, booksRead);
 	      users.add(temp);
 	      userLookup.put(name, users.size() - 1);
 	  }
 	  
 	  public static void checkMap() throws IOException{
-		  File file = new File("UserInfo.csv");
+		  File file = new File(userFile);
 		  Scanner fileIn = new Scanner(file);
 		  String[] in;
 		  String line;
@@ -134,8 +143,8 @@ public class Main {
 			  line = fileIn.nextLine();
 			  System.out.println(line);
 			  in = line.split(",");
-			  toMap(in[0],in[1],in[2],in[3]);
-			  getRatingData(in[3]);
+			  toMap(in[0],in[1],in[2],in[3],in[4]);
+			  setRatingData(in[3]);
 			  System.out.println("Working");
 			  
 		  }
@@ -145,7 +154,7 @@ public class Main {
 	  
 	//different books are separated by !
 	   //rating to the book is separated by ?
-	   public static void getRatingData(String data) {
+	   public static void setRatingData(String data) {
 		   String[] b = data.split("!");
 		   for(String s : b) {
 			   if (!s.equals("")) {
@@ -164,15 +173,16 @@ public class Main {
 	   }
 	   
 	   public static void rateBook(String[] s, String name) {
+		
 		   users.get(userLookup.get(name)).addRating(s[0]+"]"+s[1]+"!");
 	   }
 	   
 	   public static void rewriteUsers() throws IOException {
-		   PrintWriter pw = new PrintWriter("UserInfo.csv");
+		   PrintWriter pw = new PrintWriter(userFile);
 		   String[] temp;
 		   for(User u : users) {
 			   temp = u.getUserData();
-			   pw.println(temp[0]+","+temp[1]+","+temp[2]+","+temp[3]);
+			   pw.println(temp[0]+","+temp[1]+","+temp[2]+","+temp[3]+","+temp[4]);
 		   }
 		   pw.close();		   
 	   }

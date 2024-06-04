@@ -14,9 +14,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTable;
+import java.awt.Color;
 
 /**
  *
@@ -32,62 +35,12 @@ public class Login extends javax.swing.JFrame {
     public Login() throws IOException{
     	Main.main(null);
     	
-    	
-        JFrame frame = new JFrame("Login");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setLoginBackground();
         
-        // Create an instance of ImagePanel
-        ImagePanel backgroundPanel = new ImagePanel(loginImage);
-        
-        backgroundPanel.setLayout(null); // You may need to set layout as null for absolute positioning
-        
-        jTextField1 = new JTextField();
-        jTextField1.setBounds(470, 352, 750, 97); // Example: Set position and size
-        backgroundPanel.add(jTextField1);
-        
-        jPasswordField1 = new JPasswordField();
-        jPasswordField1.setBounds(470, 600, 750, 100);
-        backgroundPanel.add(jPasswordField1);
-        
-        jButton1 = new JButton("Login");
-        Dimension buttonSize = new Dimension(200, 100); // Example size
-        int buttonX = ((backgroundPanel.getWidth() - buttonSize.width) / 2)- 7;
-        int buttonY = 700;
-        jButton1.setBounds(buttonX, buttonY, buttonSize.width, buttonSize.height);
-        backgroundPanel.add(jButton1);
-        
-        // Add ActionListener to the login button
-        jButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-            	 // Retrieve username and password
-                String username = jTextField1.getText();
-                String password = new String(jPasswordField1.getPassword());
-                
-                // Do something with username and password
-                System.out.println("Username: " + username);
-                System.out.println("Password: " + password);
-                 if (Main.login(username, password)){
-                	 System.out.println("working");
-                    System.out.println("Opening window");
-                    // Close the current window
-                    frame.dispose();
-                    // Open another window
-						try {
-							System.out.println("works");
-							openNextWindow(username, password);
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					
-                }
-                 
-                 else {
-                	 System.out.println("Your username or password doesn't match. Please check and try again");
-                 }
-            }
-        });
+        Dimension buttonSize = new Dimension(200, 100); // Example size        
+        loginButton(buttonSize);
+        registerButton(buttonSize);
+       
         // Add the backgroundPanel to the frame
         frame.add(backgroundPanel);
         
@@ -100,91 +53,259 @@ public class Login extends javax.swing.JFrame {
         frame.pack();
         frame.setVisible(true);
     }
-    
-     private void openNextWindow(String username, String password) throws IOException {
 
-        // Create and configure the next window
-        JFrame nextFrame = new JFrame("Welcome " + username);
-        nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void setLoginBackground(){
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Create an instance of ImagePanel
+        backgroundPanel = new ImagePanel(loginImage);
+
+        backgroundPanel.setLayout(null); // You may need to set layout as null for absolute positioning
+        
+        jTextField1 = new JTextField();
+        jTextField1.setBounds(390, 320, 750, 100); // Example: Set position and size
+        jTextField1.setBackground(Color.LIGHT_GRAY);
+        backgroundPanel.add(jTextField1);
+        
+        jPasswordField1 = new JPasswordField();
+        jPasswordField1.setBounds(390, 542, 750, 100);
+        jPasswordField1.setBackground(Color.LIGHT_GRAY);
+        backgroundPanel.add(jPasswordField1);
+    }
+    private void loginButton(Dimension size){
+        //Actual login button
+        jButton1 = new JButton("Login");
+        int buttonX = ((backgroundPanel.getWidth() - size.width) / 2)- 150;
+        int buttonY = 700;
+        jButton1.setBounds(buttonX, buttonY, size.width, size.height);
+        jButton1.setBackground(new Color(44, 125, 200));
+        jButton1.setForeground(Color.WHITE);
+        backgroundPanel.add(jButton1);
+
+        // Add ActionListener to the login button
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                // Retrieve username and password
+                String username = jTextField1.getText();
+                String password = new String(jPasswordField1.getPassword());
+                
+                // Do something with username and password
+                System.out.println("Username: " + username);
+                System.out.println("Password: " + password);
+                if (Main.login(username, password)){
+                    System.out.println("working");
+                    System.out.println("Opening window");
+                    User user = Main.users.get(Main.userLookup.get(username));
+                    // Close the current window
+                    frame.dispose();
+                    // Open another window
+                   openProfile(user);
+                    try {
+                        //System.out.println("works");
+                        openDashboard(user);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
+                
+                else {
+                    JFrame wrongIntputFrame = new JFrame();
+                    JLabel wrongInputLabel = new JLabel("Your username or password is incorrect. Please check and try again");
+                    wrongIntputFrame.setSize(300,200);
+                    wrongIntputFrame.add(wrongInputLabel);
+                    wrongIntputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    wrongIntputFrame.setVisible(true);
+                    System.out.println("Your username or password doesn't match. Please check and try again");
+
+
+                }
+            }
+        });
+    }
+    //Kaya
+    private void registerButton(Dimension size){
+        
+        jButton2 = new JButton("Register"); // Creates register button
+        int registerX = ((backgroundPanel.getWidth() - size.width) / 2) + 150; // Sets the button's x coordinate to 200px more than the login button
+        int registerY = 700; // Sets the buttons y coordinate
+        jButton2.setBounds(registerX, registerY, size.width, size.height);
+        jButton2.setBackground(new Color(44, 125, 200));
+        jButton2.setForeground(Color.WHITE);
+        backgroundPanel.add(jButton2); // Adds it to the background
+        
+        
+        // Add ActionListener to register button
+        jButton2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                // Retrieve username and password
+                String username = jTextField1.getText();
+                String password = new String(jPasswordField1.getPassword());
+                
+                // Do something with username and password
+                System.out.println("Username: " + username);
+                System.out.println("Password: " + password);
+
+                // Error message if the username is already registered
+                if(Main.registered(username)){
+                    JFrame errorFrame = new JFrame();
+                    JLabel messagLabel = new JLabel("That username already exists");
+                    errorFrame.setSize(300,200);
+                    errorFrame.add(messagLabel);
+                    errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    errorFrame.setVisible(true);
+                }
+                else{
+                    try {
+                        Main.signUp(username, password);
+                        User user = Main.users.get(Main.userLookup.get(username));
+                        frame.dispose();
+                        openDashboard(user);
+                    } catch (IOException e2) {
+                        e2.printStackTrace();
+                    }
+                    
+                }
+
+            }
+        });
+    }
+    
+    
+    private void openDashboard(User u) throws IOException {
+
+       // Create and configure the next window
+       dashboard = new JFrame("Welcome " + u.getUsername());
+       setDashboardBackground();
+       jButton1 = new JButton("Enter");
+       Dimension buttonSize = new Dimension(200, 100); // Example size
+       int buttonX = jTextField1.getX() + jTextField1.getWidth() + 10;
+       int buttonY = jTextField1.getY();
+       jButton1.setBounds(buttonX, buttonY, buttonSize.width, buttonSize.height);
+       backgroundPanel.add(jButton1);
+       
+       PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
+       jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+       
+       System.setOut(outStream);
+       
+       Main.sort(Main.books);
+       
+       System.out.println("Here are some books you might like:");
+
+       Dimension bookSize = new Dimension(100,200);
+       int x = 480;
+       int y = 260;
+
+       for (int i = 0; i < Main.books.size(); i++) {
+           System.out.println(Main.books.get(i).toString());
+           //System.out.println(Main.books.get(i));
+            
+       }
+       
+      
+       // Add ActionListener to the button
+       jButton1.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               // Retrieve data
+               String input = jTextField1.getText();
+               //split by comma
+               String temp[] = input.split(",");
+               //lookup book
+               if (Main.bookLookup.containsKey(temp[0])) {
+                   Main.rateBook(temp, u.getUsername());
+                   try {
+                       Main.rewriteUsers();
+                   } catch (IOException e1) {
+                       // TODO Auto-generated catch block
+                       e1.printStackTrace();
+                   }
+               } else {
+                   System.out.println("404 book doesn't exist");
+               }
+               //add rating for book
+           }
+       });
+       
+       // Add the backgroundPanel to the dashboard
+       dashboard.add(backgroundPanel);
+       
+       // Set the frame resizable to false
+       dashboard.setResizable(false);
+       
+       // Set the size of the dashboard to match the size of the image
+       Dimension imageSize = backgroundPanel.getImageSize();
+       dashboard.setSize(imageSize);
+       
+       // Center the dashboard on the screen
+       dashboard.setLocationRelativeTo(null);
+       
+       // Display the dashboard
+       dashboard.setVisible(true);
+    }
+    private void setDashboardBackground(){
+        dashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // Create an instance of ImagePanel with the second image
-        ImagePanel backgroundPanel = new ImagePanel(generalImage);
+        backgroundPanel = new ImagePanel(dashboardImage);
         
         jTextArea1 = new JTextArea();
-        jTextArea1.setBounds(470, 100, 750, 400);
+        jTextArea1.setBounds(470, 250, 750, 400);
+        jTextArea1.setBackground(boxColor);
         backgroundPanel.add(jTextArea1);
         
         jTextField1 = new JTextField();
-        jTextField1.setBounds(470, 550, 750, 100);
+        jTextField1.setBounds(400, 700, 750, 100);
+        jTextArea1.setBackground(boxColor);
         backgroundPanel.add(jTextField1);
-        
-        jButton1 = new JButton("Enter");
-        Dimension buttonSize = new Dimension(200, 100); // Example size
-        int buttonX = ((backgroundPanel.getWidth() - buttonSize.width) / 2)- 7;
-        int buttonY = 700;
-        jButton1.setBounds(buttonX, buttonY, buttonSize.width, buttonSize.height);
-        backgroundPanel.add(jButton1);
-        
-        PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
-        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
-        
-        System.setOut(outStream);
-        
-        Main.sort(Main.books);
-        
-        System.out.println("Here are some books you might like:");
-
-        for (int i = 0; i < Main.books.size(); i++) {
-        	System.out.println(Main.books.get(i).toString());
-        	//System.out.println(Main.books.get(i));
-        	 
-        }
-        
-       
-        // Add ActionListener to the button
-        jButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	
-            	
-            	
-                // Retrieve data
-                String input = jTextField1.getText();
-                //split by comma
-                String temp[] = input.split(",");
-                //lookup book
-                if (Main.bookLookup.containsKey(temp[0])) {
-                	Main.rateBook(temp, username);
-                	try {
-						Main.rewriteUsers();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                } else {
-                	System.out.println("404 book doesn't exist");
-                }
-                //add rating for book
-            }
-        });
-        
-        // Add the backgroundPanel to the nextFrame
-        nextFrame.add(backgroundPanel);
-        
-        // Set the frame resizable to false
-        nextFrame.setResizable(false);
-        
-        // Set the size of the nextFrame to match the size of the image
-        Dimension imageSize = backgroundPanel.getImageSize();
-        nextFrame.setSize(imageSize);
-        
-        // Center the nextFrame on the screen
-        nextFrame.setLocationRelativeTo(null);
-        
-        // Display the nextFrame
-        nextFrame.setVisible(true);
     }
+    
+    private void openProfile(User u){
+        profile = new JFrame(u.getUsername());
+        setProfileBackground(u);      
+                               
+        /*for (int i = 0; i < u.readList.size(); i++){
+            readTable.setValueAt(u.readList.get(i), i, 0);
+        }    */   
+        PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
+        System.setOut(outStream);
+        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+        for (int i = 0; i < u.readList.size(); i++){
+            String book = u.readList.get(i);
+            System.out.println(book + "," + u.rateList.get(Main.bookLookup.get(book)));
+        }       
+              
 
+        profile.add(backgroundPanel);
+
+
+        // Set the frame resizable to false
+       profile.setResizable(false);
+       
+       // Set the size of the dashboard to match the size of the image
+       Dimension imageSize = backgroundPanel.getImageSize();
+       profile.setSize(imageSize);
+       
+       // Center the dashboard on the screen
+       profile.setLocationRelativeTo(null);
+       
+       // Display the dashboard
+       profile.setVisible(true);
+    }
+    private void setProfileBackground(User u){
+        profile.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        backgroundPanel = new ImagePanel(profileImage);
+        
+        /*readTable = new JTable(u.readList.size(), 3);
+        readTable.setBounds(100,100, 500,350);*/
+        jTextArea1 = new JTextArea();
+        jTextArea1.setBounds(470, 250, 750, 400);
+        jTextArea1.setBackground(boxColor);
+        backgroundPanel.add(jTextArea1);
+
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -328,14 +449,26 @@ public class Login extends javax.swing.JFrame {
 
     private String loginImage = "/resources/LoginPage.png";
     private String generalImage = "/resources/GeneralPage.png";
+    private String dashboardImage = "/resources/Dashboard.png";
+    private String profileImage = "/resources/ProfilePage.png";
+
+    Color boxColor = new Color(217, 240, 241);
+    Color iconColor = new Color(127, 201, 255);
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
+    private JFrame frame = new JFrame("Login");
+    private JFrame dashboard;
+    private JFrame profile;
+    private ImagePanel backgroundPanel;
+    private JTable readTable;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    
     // End of variables declaration//GEN-END:variables
 }
