@@ -4,9 +4,11 @@
  */
 package antarticagui;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.lang.Math;
 import java.awt.Font;
+import java.awt.Frame;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -72,7 +74,6 @@ public class Login extends javax.swing.JFrame {
             	 // Retrieve username and password
                 String username = jTextField1.getText();
                 String password = new String(jPasswordField1.getPassword());
-                System.out.println(Main.users.size());
                 
                 // Do something with username and password
                 System.out.println("Username: " + username);
@@ -85,7 +86,7 @@ public class Login extends javax.swing.JFrame {
                     // Open another window
 						try {
 							System.out.println("works");
-							openNextWindow(username, password);
+							openHome(username, password);
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -179,22 +180,7 @@ public class Login extends javax.swing.JFrame {
         
         System.setOut(outStream);
         
-<<<<<<< Updated upstream
-        Main.getBook();
-        
-        String[] split = null;
-        
-        Collections.shuffle(Main.bookData);
-        
-//        System.out.println("Here are some books you might like:");
-//        for (int i = 0; i <= Main.books.size(); i++) {
-//        	
-//        	System.out.println(Main.books.get(i).toString());
-//        	 
-//        }
-=======
         Main.getRecBook();
->>>>>>> Stashed changes
         
        
         // Add ActionListener to the button
@@ -204,24 +190,6 @@ public class Login extends javax.swing.JFrame {
             	
                 // Retrieve data
                 String input = jTextField1.getText();
-<<<<<<< Updated upstream
-                
-//                if (Main.bookData.contains(input)) {
-//                	 printTextField(Main.bookData.get(Main.books.indexOf(input)).getData(3), jTextArea1);
-//                }
-                try {
-					Main.signUp(input.split(",")[0], User.getHash(input.split(",")[1])+"");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-                
-                for (Map.Entry<String, Integer> entry : Main.userLookup.entrySet()) {
-            	    System.out.println(entry.getKey() + "/" + entry.getValue());
-            	}
-                
-               
-=======
                 //split by comma
                 String temp[] = input.split(",");
                 //lookup book
@@ -231,7 +199,9 @@ public class Login extends javax.swing.JFrame {
 						Main.rewriteUsers();
 						jTextArea1.setText(null);
 						Main.userLookup.clear();
-						  Main.users.clear();
+						Main.users.clear();
+						Main.books.clear();
+						Main.getBook();
 						Main.checkMap();
 				    	Main.getRecBook();
 				        
@@ -244,7 +214,6 @@ public class Login extends javax.swing.JFrame {
                 }
                
                 //add rating for book
->>>>>>> Stashed changes
             }
         });
         
@@ -264,6 +233,139 @@ public class Login extends javax.swing.JFrame {
         // Display the nextFrame
         nextFrame.setVisible(true);
     }
+     
+     private void openHome(String username, String password) throws IOException {
+    	 
+    	
+         // Create and configure the next window
+         JFrame nextFrame = new JFrame("Welcome " + username);
+         nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+         // Create an instance of ImagePanel with the second image
+         ImagePanel backgroundPanel = new ImagePanel(homeImage);
+         
+         jTextArea1 = new JTextArea();
+         jTextArea1.setEditable(false);
+         jTextArea1.setBounds(225, 332, 1392, 359);
+         backgroundPanel.add(jTextArea1);
+         
+         jButton1 = new JButton("Profile");
+         jButton1.setBounds(5,5,122,122);
+         backgroundPanel.add(jButton1);
+         
+         jButton2 = new JButton("Reccomended");
+         jButton2.setBounds(5,132,122,122);
+         backgroundPanel.add(jButton2);
+         
+                
+         jTextField1 = new JTextField("Search");
+         jTextField1.setBounds(655,200,600,80);
+         backgroundPanel.add(jTextField1);
+         
+         jButton3 = new JButton("Search");
+         jButton3.setBounds(570,200,80,80);
+         backgroundPanel.add(jButton3);
+         
+         jButton4 = new JButton("Enter");
+         jButton4.setBounds(555,800,100,80);
+         backgroundPanel.add(jButton4);
+         
+         jTextField2 = new JTextField("");
+         jTextField2.setBounds(656,800,700,80);
+         backgroundPanel.add(jTextField2);
+         
+         jButton5 = new JButton("Help");
+         jButton5.setBounds(5,776,122,122);
+         backgroundPanel.add(jButton5);
+         
+         PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
+         jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+
+    	 System.setOut(outStream);
+    	 
+         
+         jButton3.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+            	 jTextArea1.setText(null);
+             	
+                 // Retrieve data
+                 String input = jTextField1.getText();
+                 //split by comma
+                 String[] temp = {input};
+                 ArrayList<String> desires = new ArrayList<String>(Arrays.asList(temp));
+                 for (int i = 0; i < 10; i ++) {
+                	 System.out.println(Main.search(Main.books, desires).get(i));
+                 }
+             }
+         });
+         
+         jButton5.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+            	 try {
+					openHelp();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+             }
+         });
+         // Add the backgroundPanel to the nextFrame
+         nextFrame.add(backgroundPanel);
+         
+         // Set the frame resizable to false
+         nextFrame.setResizable(false);
+         
+         // Set the size of the nextFrame to match the size of the image
+         Dimension imageSize = backgroundPanel.getImageSize();
+         nextFrame.setSize(imageSize);
+         
+         // Center the nextFrame on the screen
+         nextFrame.setLocationRelativeTo(null);
+         
+         // Display the nextFrame
+         nextFrame.setVisible(true);
+     }
+     
+     private void openHelp() throws IOException {
+    	 
+    	 
+    	 ImagePanel backgroundPanel = new ImagePanel(whiteImage);
+    	 JFrame nextFrame = new JFrame("Help");
+    	 
+
+    	 jTextArea1 = new JTextArea();
+    	 jTextArea1.setEditable(false);
+         jTextArea1.setBounds(0, 0, 500, 500);
+		 backgroundPanel.add(jTextArea1);
+         
+    	 String help1 = "Search Parameters should be seperated with commas and not spaces";
+    	 String help2 = "To add a rating, type in the bottom box \"rate BookName,rating\" \nand press the button labled \"Enter\"";
+    	 String help3 = "To add a read book, type in the bottom box \"read BookName\" \nand press the button labled \"Enter\"";
+    	 
+    	 jTextArea1.setText(help1 + "\n\n" + help2 + "\n\n" + help3);
+    	 
+		// Add the backgroundPanel to the nextFrame
+         nextFrame.add(backgroundPanel);
+         
+         // Set the frame resizable to false
+         ((Frame) nextFrame).setResizable(false);
+         
+         // Set the size of the nextFrame to match the size of the image
+        
+         Dimension imageSize = backgroundPanel.getImageSize();
+         nextFrame.setSize(imageSize);
+         
+         // Center the nextFrame on the screen
+         nextFrame.setLocationRelativeTo(null);
+         
+         // Display the nextFrame
+         nextFrame.setVisible(true);
+     
+     }
+     
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -406,10 +508,15 @@ public class Login extends javax.swing.JFrame {
     	
     }
 
+    private String homeImage = "/resources/HomePage.png";
     private String loginImage = "/resources/LoginPage.png";
     private String generalImage = "/resources/GeneralPage.png";
+    private String whiteImage = "/resources/White.jpg";
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
@@ -419,5 +526,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

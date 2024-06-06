@@ -1,4 +1,3 @@
-
 package antarticagui;
 
 import java.sql.*;
@@ -8,6 +7,7 @@ import java.io.*;
 public class User {
   private String username;
   private String hashedPass;
+  private String ratings;
   private boolean isAdmin;
 
   ArrayList<String> list = new ArrayList<String>();
@@ -18,10 +18,11 @@ public class User {
   /**
   Creates a user object
   **/
-  public User(String n, String pass, String iA) {
+  public User(String n, String pass, String iA, String ratings) {
     username = n;
     //hashedPass = Integer.toString(pass.hashCode());
     hashedPass = pass;
+    this.ratings = ratings;
     
     if (iA.equalsIgnoreCase("true")) {
       isAdmin = true;
@@ -39,11 +40,12 @@ public class User {
   Gets the stored data
   **/
   public String[] getUserData() {
-	    String[] temp = new String[3];
+	    String[] temp = new String[4];
 
 	    temp[0] = username;
 	    temp[1] = hashedPass;
 	    temp[2] = Boolean.toString(isAdmin);
+	    temp[3] = ratings;
 
 	    return temp;
 	  }
@@ -67,10 +69,33 @@ public class User {
 	  return null;
   }
   
+  public void addRating(String s) {
+	  ratings += s;
+  }
+  
   public static int getHash(String input) {
 	  return input.hashCode();
   }
+  
+  public static int userInfoFileLength() throws IOException {
+	  int length = 0;
+	  File file = new File("UserInfo.csv");
+	  Scanner fileIn = new Scanner(file);
+	  
+	  while (fileIn.hasNext()) {
+		  length++;
+		  fileIn.nextLine();
+	  }
+	  fileIn.close();
+	  
+	  return length;
+	  
+  }
+  
+  
 }
+
+	
 
 /*
 This class is the dashboard for the menu
@@ -93,4 +118,7 @@ This class is the dashboard for the menu
      }
      return temp;
    }
+   
+   
+   
 }
