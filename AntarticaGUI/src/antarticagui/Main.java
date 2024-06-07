@@ -41,7 +41,6 @@ public class Main {
   //MattK
   public static boolean login (String name, String pass){
 	  System.out.println(pass.hashCode());
-	  System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
 	    if (userLookup.containsKey(name)){
 	      if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
 	        return true;

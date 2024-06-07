@@ -12,13 +12,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTable;
+import javax.swing.*;
 import java.awt.Color;
 
 /**
@@ -35,12 +29,13 @@ public class Login extends javax.swing.JFrame {
     public Login() throws IOException{
     	Main.main(null);
     	
-    	setLoginBackground();
+    	
         
         Dimension buttonSize = new Dimension(200, 100); // Example size        
+        setLoginBackground(buttonSize);
         loginButton(buttonSize);
         registerButton(buttonSize);
-       
+        
         // Add the backgroundPanel to the frame
         frame.add(backgroundPanel);
         
@@ -54,7 +49,7 @@ public class Login extends javax.swing.JFrame {
         frame.setVisible(true);
     }
 
-    private void setLoginBackground(){
+    private void setLoginBackground(Dimension size){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Create an instance of ImagePanel
         backgroundPanel = new ImagePanel(loginImage);
@@ -70,6 +65,12 @@ public class Login extends javax.swing.JFrame {
         jPasswordField1.setBounds(390, 542, 750, 100);
         jPasswordField1.setBackground(Color.LIGHT_GRAY);
         backgroundPanel.add(jPasswordField1);
+        JLabel buttonLabel = new JLabel(new ImageIcon(button));
+        buttonLabel.setBounds((backgroundPanel.getWidth() - size.width) / 2- 150, 700, size.width, size.height);
+        buttonLabel.setVisible(true);
+        backgroundPanel.add(buttonLabel);
+
+
     }
     private void loginButton(Dimension size){
         //Actual login button
@@ -79,6 +80,8 @@ public class Login extends javax.swing.JFrame {
         jButton1.setBounds(buttonX, buttonY, size.width, size.height);
         jButton1.setBackground(new Color(44, 125, 200));
         jButton1.setForeground(Color.WHITE);
+        //jButton1.setIcon(new ImageIcon(button)); 
+        jButton1.setOpaque(false);
         backgroundPanel.add(jButton1);
 
         // Add ActionListener to the login button
@@ -129,7 +132,7 @@ public class Login extends javax.swing.JFrame {
         jButton2 = new JButton("Register"); // Creates register button
         int registerX = ((backgroundPanel.getWidth() - size.width) / 2) + 150; // Sets the button's x coordinate to 200px more than the login button
         int registerY = 700; // Sets the buttons y coordinate
-        jButton2.setBounds(registerX, registerY, size.width, size.height);
+        jButton2.setBounds(registerX, registerY, size.width, size.height); // Sets the size and location
         jButton2.setBackground(new Color(44, 125, 200));
         jButton2.setForeground(Color.WHITE);
         backgroundPanel.add(jButton2); // Adds it to the background
@@ -248,7 +251,7 @@ public class Login extends javax.swing.JFrame {
         dashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // Create an instance of ImagePanel with the second image
-        backgroundPanel = new ImagePanel(dashboardImage);
+        backgroundPanel = new ImagePanel(generalImage);
         
         jTextArea1 = new JTextArea();
         jTextArea1.setBounds(470, 250, 750, 400);
@@ -270,12 +273,22 @@ public class Login extends javax.swing.JFrame {
         }    */   
         PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
         System.setOut(outStream);
-        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
         for (int i = 0; i < u.readList.size(); i++){
             String book = u.readList.get(i);
             System.out.println(book + "," + u.rateList.get(Main.bookLookup.get(book)));
         }       
-              
+        
+
+        jButton1 = new JButton("Rate");
+        jButton1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String input = jTextField1.getText();
+                
+            }
+        });
+        
+        
 
         profile.add(backgroundPanel);
 
@@ -303,6 +316,11 @@ public class Login extends javax.swing.JFrame {
         jTextArea1.setBounds(470, 250, 750, 400);
         jTextArea1.setBackground(boxColor);
         backgroundPanel.add(jTextArea1);
+
+        jTextField1 = new JTextField();
+        jTextField1.setBounds(400, 700, 750, 100);
+        jTextArea1.setBackground(boxColor);
+        backgroundPanel.add(jTextField1);
 
 
     }
@@ -451,6 +469,7 @@ public class Login extends javax.swing.JFrame {
     private String generalImage = "/resources/GeneralPage.png";
     private String dashboardImage = "/resources/Dashboard.png";
     private String profileImage = "/resources/ProfilePage.png";
+    private String button = "/resources/Button.png";
 
     Color boxColor = new Color(217, 240, 241);
     Color iconColor = new Color(127, 201, 255);
