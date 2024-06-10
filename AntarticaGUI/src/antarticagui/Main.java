@@ -72,10 +72,10 @@ public class Main {
   public static void signUp (String name, String pass) throws IOException{
 
 	String hashed = pass.hashCode()+"";
-    User temp = new User(name, hashed, "false", "sysBook]0!");
+    User temp = new User(name, hashed, "false", "sysBook]0!", "sysBook!");
     users.add(temp);
     userLookup.put(name, users.indexOf(temp));
-        rewriteUsers();
+    rewriteUsers();
         
   }
   
@@ -214,7 +214,7 @@ public class Main {
 	   }
 	   
 	   public static void rewriteUsers() throws IOException {
-		   PrintWriter pw = new PrintWriter("UserInfo.csv");
+		   PrintWriter pw = new PrintWriter(userFile);
 		   String[] temp;
 		   for(User u : users) {
 			   temp = u.getUserData();

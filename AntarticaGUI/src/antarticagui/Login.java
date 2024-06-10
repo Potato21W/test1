@@ -82,8 +82,6 @@ public class Login extends javax.swing.JFrame {
         jButton1.setBounds(buttonX, buttonY, size.width, size.height);
         jButton1.setBackground(new Color(44, 125, 200));
         jButton1.setForeground(Color.WHITE);
-        //jButton1.setIcon(new ImageIcon(button)); 
-        jButton1.setOpaque(false);
         backgroundPanel.add(jButton1);
 
         // Add ActionListener to the login button
@@ -104,14 +102,14 @@ public class Login extends javax.swing.JFrame {
                     // Close the current window
                     frame.dispose();
                     // Open another window
-                   openProfile(user);
-                    try {
-                        //System.out.println("works");
+                    openProfile(user);
+                   /*  try {
+                        System.out.println("works");
                         openDashboard(user);
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
-                    }
+                    }*/
                 }
                 
                 else {
@@ -179,86 +177,8 @@ public class Login extends javax.swing.JFrame {
     
     private void openDashboard(User u) throws IOException {
 
-       // Create and configure the next window
-       dashboard = new JFrame("Welcome " + u.getUsername());
-       setDashboardBackground();
-       jButton1 = new JButton("Enter");
-       Dimension buttonSize = new Dimension(200, 100); // Example size
-       int buttonX = jTextField1.getX() + jTextField1.getWidth() + 10;
-       int buttonY = jTextField1.getY();
-       jButton1.setBounds(buttonX, buttonY, buttonSize.width, buttonSize.height);
-       backgroundPanel.add(jButton1);
-       
-       PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
-       jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
-       
-       System.setOut(outStream);
-       
-       Main.getRecBook();
-       
-      
-       // Add ActionListener to the button
-       jButton1.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               // Retrieve data
-               String input = jTextField1.getText();
-               //split by comma
-               String temp[] = input.split(",");
-               //lookup book
-               if (Main.bookLookup.containsKey(temp[0])) {
-                   Main.rateBook(temp, u.getUsername());
-                   try {
-                       Main.rewriteUsers();
-                   } catch (IOException e1) {
-                       // TODO Auto-generated catch block
-                       e1.printStackTrace();
-                   }
-               } else {
-                   System.out.println("404 book doesn't exist");
-               }
-               //add rating for book
-           }
-       });
-       
-       // Add the backgroundPanel to the dashboard
-       dashboard.add(backgroundPanel);
-       
-       // Set the frame resizable to false
-       dashboard.setResizable(false);
-       
-       // Set the size of the dashboard to match the size of the image
-       Dimension imageSize = backgroundPanel.getImageSize();
-       dashboard.setSize(imageSize);
-       
-       // Center the dashboard on the screen
-       dashboard.setLocationRelativeTo(null);
-       
-       // Display the dashboard
-       dashboard.setVisible(true);
-    }
-    private void setDashboardBackground(){
-        dashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        // Create an instance of ImagePanel with the second image
-        backgroundPanel = new ImagePanel(generalImage);
-        
-        jTextArea1 = new JTextArea();
-        jTextArea1.setBounds(470, 250, 750, 400);
-        jTextArea1.setBackground(boxColor);
-        backgroundPanel.add(jTextArea1);
-        
-        jTextField1 = new JTextField();
-        jTextField1.setBounds(400, 700, 750, 100);
-        jTextArea1.setBackground(boxColor);
-        backgroundPanel.add(jTextField1);
-    }
-    
-
-
-
         // Create and configure the next window
-        JFrame nextFrame = new JFrame("Welcome " + username);
+        JFrame nextFrame = new JFrame("Welcome " + u.getUsername());
         nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         // Create an instance of ImagePanel with the second image
@@ -298,7 +218,7 @@ public class Login extends javax.swing.JFrame {
                 String temp[] = input.split(",");
                 //lookup book
                 if (Main.bookLookup.containsKey(temp[0])) {
-                	Main.rateBook(temp, username);
+                	Main.rateBook(temp, u.getUsername());
                 	try {
 						Main.rewriteUsers();
 						jTextArea1.setText(null);
@@ -338,11 +258,12 @@ public class Login extends javax.swing.JFrame {
         nextFrame.setVisible(true);
     }
      
-     private void openHome(String username, String password) throws IOException {
+     
+     private void openHome(User u) throws IOException {
     	 
     	
          // Create and configure the next window
-         JFrame nextFrame = new JFrame("Welcome " + username);
+         JFrame nextFrame = new JFrame("Welcome " + u.getUsername());
          nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          
          // Create an instance of ImagePanel with the second image
@@ -389,20 +310,61 @@ public class Login extends javax.swing.JFrame {
     	 
          
          jButton3.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-            	 jTextArea1.setText(null);
-             	
-                 // Retrieve data
-                 String input = jTextField1.getText();
-                 //split by comma
-                 String[] temp = {input};
-                 ArrayList<String> desires = new ArrayList<String>(Arrays.asList(temp));
-                 for (int i = 0; i < 10; i ++) {
-                	 System.out.println(Main.search(Main.books, desires).get(i));
-                 }
-             }
-         });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jTextArea1.setText(null);
+
+                // Retrieve data
+                String input = jTextField1.getText();
+                jTextArea1.setText(null);
+                //split by comma
+                String[] temp = {input};
+                jTextArea1.setText(null);
+                ArrayList<String> desires = new ArrayList<String>(Arrays.asList(temp));
+                for (int i = 0; i < 10; i ++) {
+                    System.out.println(Main.search(Main.books, desires).get(i));
+                }
+            }
+        });
+        jButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // Retrieve data
+                String input = jTextField2.getText();
+                //split by comma
+                String[] temp = input.split(" ");
+
+
+                if (temp[0].equalsIgnoreCase("rate")) {
+                    String[] temp2 = temp[1].split(",");
+                    if (Main.bookLookup.containsKey(temp2[0])) {
+                        Main.rateBook(temp2, u.getUsername());
+                        try {
+                            Main.rewriteUsers();
+                            jTextArea1.setText(null);
+                            Main.userLookup.clear();
+                            Main.users.clear();
+                            Main.books.clear();
+                            Main.getBook();
+                            Main.checkMap();
+                            Main.getRecBook();
+
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    } 
+                    jTextArea1.setText(null);
+                }
+
+                else if(temp[0].equalsIgnoreCase("read")) {
+                    jTextArea1.setText(null);
+                }
+
+
+            }
+        });
          
          jButton5.addActionListener(new ActionListener() {
              @Override

@@ -107,7 +107,7 @@ public class User {
   
   public static int userInfoFileLength() throws IOException {
 	  int length = 0;
-	  File file = new File("UserInfo.csv");
+	  File file = new File(Main.userFile);
 	  Scanner fileIn = new Scanner(file);
 	  
 	  while (fileIn.hasNext()) {
