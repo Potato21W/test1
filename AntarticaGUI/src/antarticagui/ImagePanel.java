@@ -24,6 +24,7 @@ public class ImagePanel extends JPanel {
             throw new IllegalArgumentException("Image not found: " + imagePath);
         }
         backgroundImage = new ImageIcon(imgUrl);
+        System.out.println(backgroundImage.getIconWidth() + " " + backgroundImage.getIconHeight());
         Dimension size = new Dimension(backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
         setPreferredSize(size);
         setMinimumSize(size);

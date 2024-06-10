@@ -15,7 +15,9 @@ public class Main {
   static ArrayList<User> users = new ArrayList<User>();
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   static Map<String, Integer> bookLookup = new HashMap<String, Integer>();
-  
+
+  static String bookFile = "BookData.csv";
+  static String userFile = "UserInfo.csv";
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
@@ -25,6 +27,17 @@ public class Main {
     }
   }
 
+//  static void setBooks() throws FileNotFoundException{
+//	  ArrayList<Book> temp = new ArrayList<Book>();
+//	  File file = new File("BookData.csv");
+//	  Scanner inFile = new Scanner(file);
+//	  
+//	  while(inFile.hasNext()) {
+//		  String line = inFile.nextLine();
+//		  temp.add(new Book(line.split(",")[0],line.split(",")[1],line.split(",")[2],line.split(",")[3],line.split(",")[4]));
+//	  }
+//  }
+//  
 //  static void setBooks() throws FileNotFoundException{
 //	  ArrayList<Book> temp = new ArrayList<Book>();
 //	  File file = new File("BookData.csv");
@@ -65,9 +78,12 @@ public class Main {
         rewriteUsers();
         
   }
+  
 	  
 	  public static void getBook() throws IOException {
-		  File file = new File("BookData.csv");
+		  
+		  System.out.println("something");
+		  File file = new File(bookFile);
 		  
 		  Scanner inputFile = new Scanner(file);
 		  int counter = 0;
@@ -127,15 +143,15 @@ public class Main {
 		    return books;
 		  }
 	  
-	  public static void toMap(String name, String pass, String iA, String ratings) {
-		  User temp = new User(name, pass, iA, ratings);
+	  public static void toMap(String name, String pass, String iA, String ratings, String booksRead) {
+		  User temp = new User(name, pass, iA, ratings, booksRead);
 	      users.add(temp);
 	      userLookup.put(name, users.size() - 1);
 	  }
 	  
 	  public static void checkMap() throws IOException{
 	
-		  File file = new File("UserInfo.csv");
+		  File file = new File(userFile);
 		  Scanner fileIn = new Scanner(file);
 		  String[] in;
 		  String line;
@@ -146,7 +162,7 @@ public class Main {
 			  line = fileIn.nextLine();
 			  //System.out.println(line);
 			  in = line.split(",");
-			  toMap(in[0],in[1],in[2],in[3]);
+			  toMap(in[0],in[1],in[2],in[3],in[4]);
 			  getRatingData(in[3]);
 			  counter++;
 			  

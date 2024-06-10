@@ -20,8 +20,7 @@ public class AntarticaGUI {
     	Main.getBook();
     	Main.checkMap();
     	
-    	
-    	
+    		
     	
         new Login();
     }
