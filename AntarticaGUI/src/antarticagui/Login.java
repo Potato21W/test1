@@ -103,13 +103,13 @@ public class Login extends javax.swing.JFrame {
                     frame.dispose();
                     // Open another window
                     openProfile(user);
-                   /*  try {
+                     try {
                         System.out.println("works");
                         openDashboard(user);
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
-                    }*/
+                    }
                 }
                 
                 else {
