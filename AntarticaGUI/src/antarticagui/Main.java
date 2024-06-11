@@ -16,8 +16,8 @@ public class Main {
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   static Map<String, Integer> bookLookup = new HashMap<String, Integer>();
 
-  static String bookFile = "BookData.csv";
-  static String userFile = "UserInfo.csv";
+  static String bookFile = "C:\\Users\\Dapik\\OneDrive\\Documents\\GitHub\\test1\\AntarticaGUI\\BookData.csv";
+  static String userFile = "C:\\Users\\Dapik\\OneDrive\\Documents\\GitHub\\test1\\AntarticaGUI\\UserInfo.csv";
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
@@ -51,13 +51,10 @@ public class Main {
 //  
   //MattK
   public static boolean login (String name, String pass){
-//	  System.out.println(pass.hashCode());
-//	  System.out.println(users.get(userLookup.get(name)).getUserData()[1]);
 	    if (userLookup.containsKey(name)){
 	      if (users.get(userLookup.get(name)).getUserData()[1].equals(Integer.toString(pass.hashCode()))) {
 	        return true;
-	      } 
-	    	
+	      } 	
 	    }
 	    return false;
 	  }
@@ -67,6 +64,7 @@ public class Main {
    * @param name
    * @param pass
    * @throws IOException
+   * By Kaya
   */
   @SuppressWarnings({ "unlikely-arg-type" })
   public static void signUp (String name, String pass) throws IOException{
@@ -218,7 +216,7 @@ public class Main {
 		   String[] temp;
 		   for(User u : users) {
 			   temp = u.getUserData();
-			   pw.println(temp[0]+","+temp[1]+","+temp[2]+","+temp[3]);
+			   pw.println(temp[0]+","+temp[1]+","+temp[2]+","+temp[3]+ ","+temp[4]);
 		   }
 		   pw.close();		   
 	   }

@@ -30,9 +30,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() throws IOException{
     	Main.main(null);
-    	
-    	
-        
+
         Dimension buttonSize = new Dimension(200, 100); // Example size        
         setLoginBackground(buttonSize);
         loginButton(buttonSize);
@@ -59,12 +57,12 @@ public class Login extends javax.swing.JFrame {
         backgroundPanel.setLayout(null); // You may need to set layout as null for absolute positioning
         
         jTextField1 = new JTextField();
-        jTextField1.setBounds(390, 320, 750, 100); // Example: Set position and size
+        jTextField1.setBounds(468, 350, 750, 100); // Example: Set position and size
         jTextField1.setBackground(Color.LIGHT_GRAY);
         backgroundPanel.add(jTextField1);
-        
+
         jPasswordField1 = new JPasswordField();
-        jPasswordField1.setBounds(390, 542, 750, 100);
+        jPasswordField1.setBounds(468, 600, 750, 100);
         jPasswordField1.setBackground(Color.LIGHT_GRAY);
         backgroundPanel.add(jPasswordField1);
         JLabel buttonLabel = new JLabel(new ImageIcon(button));
@@ -81,8 +79,9 @@ public class Login extends javax.swing.JFrame {
         int buttonY = 700;
         jButton1.setBounds(buttonX, buttonY, size.width, size.height);
         jButton1.setBackground(new Color(44, 125, 200));
-        jButton1.setForeground(Color.WHITE);
+        jButton1.setForeground(Color.WHITE);  
         backgroundPanel.add(jButton1);
+        //backgroundPanel.add(buttonLabel);
 
         // Add ActionListener to the login button
         jButton1.addActionListener(new ActionListener() {
@@ -102,14 +101,13 @@ public class Login extends javax.swing.JFrame {
                     // Close the current window
                     frame.dispose();
                     // Open another window
-                    openProfile(user);
-                   /*  try {
-                        System.out.println("works");
-                        openDashboard(user);
+                    try {
+                        
+                        openHome(user);
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
-                    }*/
+                    }
                 }
                 
                 else {
@@ -127,6 +125,11 @@ public class Login extends javax.swing.JFrame {
         });
     }
     //Kaya
+    /**
+     * 
+     * @param size
+     * By Kaya
+     */
     private void registerButton(Dimension size){
         
         jButton2 = new JButton("Register"); // Creates register button
@@ -308,7 +311,17 @@ public class Login extends javax.swing.JFrame {
 
     	 System.setOut(outStream);
     	 
-         
+         jButton1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    openProfile(u);
+                } catch (IOException eIO){
+                    eIO.printStackTrace();
+                }
+                
+                nextFrame.dispose();
+            }
+         });
          jButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -431,27 +444,36 @@ public class Login extends javax.swing.JFrame {
      
      }
      
-     private void openProfile(User u){
+     private void openProfile(User u) throws IOException{
         profile = new JFrame(u.getUsername());
         setProfileBackground(u);      
                                
         /*for (int i = 0; i < u.readList.size(); i++){
             readTable.setValueAt(u.readList.get(i), i, 0);
         }    */   
-        PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
-        System.setOut(outStream);
-        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
-        for (int i = 0; i < u.readList.size(); i++){
-            String book = u.readList.get(i);
-            System.out.println(book + "," + u.rateList.get(Main.bookLookup.get(book)));
-        }       
+        printRead(u);  
         
 
-        jButton1 = new JButton("Rate");
-        jButton1.addActionListener(new ActionListener() {
+        jButton1 = new JButton("Mark as read");
+        jButton1.setBounds(jTextField1.getX()+jTextField1.getWidth()+20, jTextField1.getY(), 200, 100);
+        jButton1.setBackground(new Color(44, 125, 200));
+        jButton1.setForeground(Color.WHITE);  
+        backgroundPanel.add(jButton1);
+
+        jButton1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String input = jTextField1.getText();
-                
+                if (Main.bookLookup.containsKey(input)) {
+                    u.addHasRead(input);
+                    System.out.println(input + " , " + u.rateList.get(Main.bookLookup.get(input)));
+                    
+                    try {
+                        Main.rewriteUsers();
+                    } catch (IOException eIO) {
+                        eIO.printStackTrace();
+                    }
+                    
+                }
             }
         });
         
@@ -473,6 +495,16 @@ public class Login extends javax.swing.JFrame {
        // Display the dashboard
        profile.setVisible(true);
     }
+    private void printRead(User u){
+        PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
+        System.setOut(outStream);
+        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
+        for (int i = 0; i < u.readList.size(); i++){
+            String book = u.readList.get(i);
+            System.out.println(book + "," + u.rateList.get(Main.bookLookup.get(book)));
+
+        }  
+    }
     private void setProfileBackground(User u){
         profile.setDefaultCloseOperation(EXIT_ON_CLOSE);
         backgroundPanel = new ImagePanel(profileImage);
@@ -480,12 +512,12 @@ public class Login extends javax.swing.JFrame {
         /*readTable = new JTable(u.readList.size(), 3);
         readTable.setBounds(100,100, 500,350);*/
         jTextArea1 = new JTextArea();
-        jTextArea1.setBounds(470, 250, 750, 400);
+        jTextArea1.setBounds(backgroundPanel.getWidth()/4 -80, 250, 3*backgroundPanel.getWidth()/4 -150, 400);
         jTextArea1.setBackground(boxColor);
         backgroundPanel.add(jTextArea1);
 
         jTextField1 = new JTextField();
-        jTextField1.setBounds(400, 700, 750, 100);
+        jTextField1.setBounds(jTextArea1.getX(), 700, jTextArea1.getWidth(), 100);
         jTextArea1.setBackground(boxColor);
         backgroundPanel.add(jTextField1);
 

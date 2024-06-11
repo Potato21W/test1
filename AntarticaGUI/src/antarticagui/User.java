@@ -78,9 +78,16 @@ public class User {
 	    return temp;
 	  }
 
-  public void addHasRead(String bookName, String rating) {
+  public void addHasRead(String bookName) {
     readList.add(bookName);
-    
+    booksRead += bookName + "!";
+  }
+  public void addHasRead(String bookName, String rating){
+    readList.add(bookName);
+    rateList.set(Main.bookLookup.get(bookName), rating);
+    booksRead += bookName + "!";
+    ratings += bookName+ "]" + rating + "!";
+
   }
 
   public void toDatabase() throws IOException {

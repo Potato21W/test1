@@ -113,6 +113,6 @@ public class Book{
   //will be changed as we work on the GUI
   //Kaya
   public String toString(){
-    return title + " By: " + author + "\nSynopsis: " + description + " \n" + getRating() +"/5\n" + genre + " ";
+    return title + " By: " + author + ", Synopsis: " + description + ", " + getRating() +"/5, " + genre + " ";
   }
 }
