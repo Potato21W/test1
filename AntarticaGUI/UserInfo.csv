@@ -1,5 +1,7 @@
-test4,110251490,false,book1]2!book2]4!book3]2!book1]4!,book1!book2!book4
-test5,110251490,false,book1]2!book2]4!book3]2!book4]3!,book2!book5
-yest,114869093,false,book1]2!book2]4!book3]2!,book3!book!book4
-testtest,-1145835484,false,book1]2!book2]4!book3]2!,book4!book3
-,0,false,book1]2!book2]4!book3]2!book1]4!,book1!book2!book4!book5!
+test4,110251490,false,sysBook]0!1984]5!1984]5!Jane Eyre]4.5!,sysBook!1984!
+test5,110251490,false,sysBook]0!,sysBook!
+yest,114869093,false,sysBook]0!,sysBook!
+testtest,-1145835484,false,sysBook]0!,sysBook!
+,0,false,sysBook]0!1984]4!Brave New World]4!War and Peace]2!1984]4.5!1984]4.5!,sysBook!Brave New World!
+New User,-785233487,false,sysBook]0!,sysBook!
+U,3433489,false,sysBook]0!1984]1!,sysBook!War and Peace!

@@ -7,7 +7,7 @@ public class Book{
   private String title;
   private String genre;
   private String description;
-  private int score;
+  private int score = 9999;
   private String[] ratings;
 
   //Kaya

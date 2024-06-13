@@ -1,5 +1,5 @@
-package antarticagui;
 
+package antarticagui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,8 +16,8 @@ public class Main {
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   static Map<String, Integer> bookLookup = new HashMap<String, Integer>();
 
-  static String bookFile = "C:\\Users\\Dapik\\OneDrive\\Documents\\GitHub\\test1\\AntarticaGUI\\BookData.csv";
-  static String userFile = "C:\\Users\\Dapik\\OneDrive\\Documents\\GitHub\\test1\\AntarticaGUI\\UserInfo.csv";
+  static String bookFile = "C:\\Users\\Dapik\\test1\\test1\\AntarticaGUI\\BookData.csv";
+  static String userFile = "C:\\Users\\Dapik\\test1\\test1\\AntarticaGUI\\UserInfo.csv";
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
@@ -27,28 +27,6 @@ public class Main {
     }
   }
 
-//  static void setBooks() throws FileNotFoundException{
-//	  ArrayList<Book> temp = new ArrayList<Book>();
-//	  File file = new File("BookData.csv");
-//	  Scanner inFile = new Scanner(file);
-//	  
-//	  while(inFile.hasNext()) {
-//		  String line = inFile.nextLine();
-//		  temp.add(new Book(line.split(",")[0],line.split(",")[1],line.split(",")[2],line.split(",")[3],line.split(",")[4]));
-//	  }
-//  }
-//  
-//  static void setBooks() throws FileNotFoundException{
-//	  ArrayList<Book> temp = new ArrayList<Book>();
-//	  File file = new File("BookData.csv");
-//	  Scanner inFile = new Scanner(file);
-//	  
-//	  while(inFile.hasNext()) {
-//		  String line = inFile.nextLine();
-//		  temp.add(new Book(line.split(",")[0],line.split(",")[1],line.split(",")[2],line.split(",")[3],line.split(",")[4]));
-//	  }
-//  }
-//  
   //MattK
   public static boolean login (String name, String pass){
 	    if (userLookup.containsKey(name)){
@@ -114,8 +92,7 @@ public class Main {
 	  
 	  static ArrayList<Book> search(ArrayList<Book> books, ArrayList<String> desires){
 		   
-		  
-		    for (int i = 0; i < books.size(); i++){
+		    for (int i = 0; i < books.size()-1; i++){
 		    	books.get(i).calcScore(desires);
 		    }
 		    
@@ -129,8 +106,7 @@ public class Main {
 		  }
 	  
 	  
-	  static ArrayList<Book> sort(ArrayList<Book> books){
-		   
+	  static ArrayList<Book> sort(ArrayList<Book> books){  	   	 
 		  
 		    for (int i = 0; i < books.size(); i++){
 		    	books.get(i).getData(4);
@@ -174,10 +150,10 @@ public class Main {
 		  
 	  }
 	  
-	  public static void getRecBook() {
+	  public static void getTopBooks() {
 		  sort(books);
 	        
-	        System.out.println("Here are some books you might like:");
+	        System.out.println("Most Popular on Antarctica:");
 
 	        for (int i = 0; i < books.size() - 1; i++) {
 	        	System.out.println(books.get(i).toString());
@@ -205,10 +181,6 @@ public class Main {
 				   
 			   }
 		   }
-	   }
-	   
-	   public static void rateBook(String[] s, String name) {
-		   users.get(userLookup.get(name)).addRating(s[0]+"]"+s[1]+"!");
 	   }
 	   
 	   public static void rewriteUsers() throws IOException {

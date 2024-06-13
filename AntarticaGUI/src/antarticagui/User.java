@@ -1,6 +1,5 @@
 
 package antarticagui;
-
 import java.sql.*;
 import java.util.*;
 import java.io.*;
@@ -82,11 +81,9 @@ public class User {
     readList.add(bookName);
     booksRead += bookName + "!";
   }
-  public void addHasRead(String bookName, String rating){
-    readList.add(bookName);
-    rateList.set(Main.bookLookup.get(bookName), rating);
-    booksRead += bookName + "!";
-    ratings += bookName+ "]" + rating + "!";
+  public void rateBook(String[] s){
+    rateList.set(Main.bookLookup.get(s[0]), s[1]);
+    ratings += s[0]+ "]" + s[1] + "!";
 
   }
 

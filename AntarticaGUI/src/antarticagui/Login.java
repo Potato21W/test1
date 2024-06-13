@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package antarticagui;
 
+package antarticagui;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.lang.Math;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Image;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -31,6 +32,7 @@ public class Login extends javax.swing.JFrame {
     public Login() throws IOException{
     	Main.main(null);
 
+        frame = new JFrame("Login");
         Dimension buttonSize = new Dimension(200, 100); // Example size        
         setLoginBackground(buttonSize);
         loginButton(buttonSize);
@@ -65,10 +67,6 @@ public class Login extends javax.swing.JFrame {
         jPasswordField1.setBounds(468, 600, 750, 100);
         jPasswordField1.setBackground(Color.LIGHT_GRAY);
         backgroundPanel.add(jPasswordField1);
-        JLabel buttonLabel = new JLabel(new ImageIcon(button));
-        buttonLabel.setBounds((backgroundPanel.getWidth() - size.width) / 2- 150, 700, size.width, size.height);
-        buttonLabel.setVisible(true);
-        backgroundPanel.add(buttonLabel);
 
 
     }
@@ -79,6 +77,7 @@ public class Login extends javax.swing.JFrame {
         int buttonY = 700;
         jButton1.setBounds(buttonX, buttonY, size.width, size.height);
         jButton1.setBackground(new Color(44, 125, 200));
+        jButton1.setText("Login");
         jButton1.setForeground(Color.WHITE);  
         backgroundPanel.add(jButton1);
         //backgroundPanel.add(buttonLabel);
@@ -111,13 +110,7 @@ public class Login extends javax.swing.JFrame {
                 }
                 
                 else {
-                    JFrame wrongIntputFrame = new JFrame();
-                    JLabel wrongInputLabel = new JLabel("Your username or password is incorrect. Please check and try again");
-                    wrongIntputFrame.setSize(300,200);
-                    wrongIntputFrame.add(wrongInputLabel);
-                    wrongIntputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    wrongIntputFrame.setVisible(true);
-                    System.out.println("Your username or password doesn't match. Please check and try again");
+                    errorMessage("Your username or password was inccorect, please try again");
 
 
                 }
@@ -154,19 +147,14 @@ public class Login extends javax.swing.JFrame {
 
                 // Error message if the username is already registered
                 if(Main.registered(username)){
-                    JFrame errorFrame = new JFrame();
-                    JLabel messagLabel = new JLabel("That username already exists");
-                    errorFrame.setSize(300,200);
-                    errorFrame.add(messagLabel);
-                    errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    errorFrame.setVisible(true);
+                    errorMessage("That username already exists");
                 }
                 else{
                     try {
                         Main.signUp(username, password);
                         User user = Main.users.get(Main.userLookup.get(username));
                         frame.dispose();
-                        openDashboard(user);
+                        openHome(user);
                     } catch (IOException e2) {
                         e2.printStackTrace();
                     }
@@ -207,7 +195,7 @@ public class Login extends javax.swing.JFrame {
         
         System.setOut(outStream);
         
-        Main.getRecBook();
+        Main.getTopBooks();
         
        
         // Add ActionListener to the button
@@ -221,7 +209,7 @@ public class Login extends javax.swing.JFrame {
                 String temp[] = input.split(",");
                 //lookup book
                 if (Main.bookLookup.containsKey(temp[0])) {
-                	Main.rateBook(temp, u.getUsername());
+                	u.rateBook(temp);
                 	try {
 						Main.rewriteUsers();
 						jTextArea1.setText(null);
@@ -230,7 +218,7 @@ public class Login extends javax.swing.JFrame {
 						Main.books.clear();
 						Main.getBook();
 						Main.checkMap();
-				    	Main.getRecBook();
+				    	Main.getTopBooks();
 				        
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -279,23 +267,33 @@ public class Login extends javax.swing.JFrame {
          
          jButton1 = new JButton("Profile");
          jButton1.setBounds(5,5,122,122);
+         jButton1.setBackground(new Color(44, 125, 200));
+         jButton1.setForeground(Color.WHITE);  
          backgroundPanel.add(jButton1);
          
          jButton2 = new JButton("Reccomended");
          jButton2.setBounds(5,132,122,122);
+         jButton1.setBackground(new Color(44, 125, 200));
+         jButton1.setForeground(Color.WHITE);  
          backgroundPanel.add(jButton2);
          
                 
          jTextField1 = new JTextField("Search");
          jTextField1.setBounds(655,200,600,80);
+         jButton1.setBackground(new Color(44, 125, 200));
+         jButton1.setForeground(Color.WHITE);  
          backgroundPanel.add(jTextField1);
          
          jButton3 = new JButton("Search");
          jButton3.setBounds(570,200,80,80);
+         jButton1.setBackground(new Color(44, 125, 200));
+         jButton1.setForeground(Color.WHITE);  
          backgroundPanel.add(jButton3);
          
          jButton4 = new JButton("Enter");
          jButton4.setBounds(555,800,100,80);
+         jButton1.setBackground(new Color(44, 125, 200));
+         jButton1.setForeground(Color.WHITE);  
          backgroundPanel.add(jButton4);
          
          jTextField2 = new JTextField("");
@@ -304,15 +302,19 @@ public class Login extends javax.swing.JFrame {
          
          jButton5 = new JButton("Help");
          jButton5.setBounds(5,776,122,122);
+         jButton1.setBackground(new Color(44, 125, 200));
+         jButton1.setForeground(Color.WHITE);  
          backgroundPanel.add(jButton5);
          
          PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
          jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
 
     	 System.setOut(outStream);
+         Main.getTopBooks();
     	 
          jButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	frame.dispose();
                 try{
                     openProfile(u);
                 } catch (IOException eIO){
@@ -322,6 +324,7 @@ public class Login extends javax.swing.JFrame {
                 nextFrame.dispose();
             }
          });
+        //Search button
          jButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -346,13 +349,12 @@ public class Login extends javax.swing.JFrame {
                 // Retrieve data
                 String input = jTextField2.getText();
                 //split by comma
-                String[] temp = input.split(" ");
-
+                String[] temp = input.split("_");
 
                 if (temp[0].equalsIgnoreCase("rate")) {
                     String[] temp2 = temp[1].split(",");
                     if (Main.bookLookup.containsKey(temp2[0])) {
-                        Main.rateBook(temp2, u.getUsername());
+                        u.rateBook(temp2);
                         try {
                             Main.rewriteUsers();
                             jTextArea1.setText(null);
@@ -361,9 +363,10 @@ public class Login extends javax.swing.JFrame {
                             Main.books.clear();
                             Main.getBook();
                             Main.checkMap();
-                            Main.getRecBook();
+                            Main.getTopBooks();
 
                         } catch (IOException e1) {
+
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -443,7 +446,13 @@ public class Login extends javax.swing.JFrame {
          nextFrame.setVisible(true);
      
      }
-     
+    private void openRec(User u){
+        frame = new JFrame(u.getUsername());
+
+    }    
+    private void setRecBackground(){
+        backgroundPanel = new ImagePanel(dashboardImage);
+    }
      private void openProfile(User u) throws IOException{
         profile = new JFrame(u.getUsername());
         setProfileBackground(u);      
@@ -451,6 +460,7 @@ public class Login extends javax.swing.JFrame {
         /*for (int i = 0; i < u.readList.size(); i++){
             readTable.setValueAt(u.readList.get(i), i, 0);
         }    */   
+        
         printRead(u);  
         
 
@@ -459,6 +469,12 @@ public class Login extends javax.swing.JFrame {
         jButton1.setBackground(new Color(44, 125, 200));
         jButton1.setForeground(Color.WHITE);  
         backgroundPanel.add(jButton1);
+        
+        jButton2 = new JButton("Home");
+        jButton2.setBounds(5,5,122,122);
+        jButton1.setBackground(new Color(44, 125, 200));
+        jButton1.setForeground(Color.WHITE);  
+        backgroundPanel.add(jButton2);
 
         jButton1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -474,6 +490,24 @@ public class Login extends javax.swing.JFrame {
                     }
                     
                 }
+            }
+        });
+        
+        jButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+               
+                    profile.dispose();
+                    
+                    // Open another window
+                    try {
+                        
+                        openHome(u);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                
             }
         });
         
@@ -499,7 +533,10 @@ public class Login extends javax.swing.JFrame {
         PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
         System.setOut(outStream);
         jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
-        for (int i = 0; i < u.readList.size(); i++){
+        if (u.readList.get(0).equals(null)){
+            System.out.println("You have no read books");
+        }
+        for (int i = 1; i < u.readList.size(); i++){
             String book = u.readList.get(i);
             System.out.println(book + "," + u.rateList.get(Main.bookLookup.get(book)));
 
@@ -523,6 +560,20 @@ public class Login extends javax.swing.JFrame {
 
 
     }     
+  
+    /**
+     * Creates a temporary frame to give the user a message
+     * @param msg The message displayed
+     * By Kaya
+     */
+    private void errorMessage (String msg){
+        JFrame errorFrame = new JFrame();
+        JLabel messagLabel = new JLabel(msg);
+        errorFrame.setSize(300,200);
+        errorFrame.add(messagLabel);
+        errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        errorFrame.setVisible(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -670,7 +721,6 @@ public class Login extends javax.swing.JFrame {
     private String generalImage = "/resources/GeneralPage.png";
     private String dashboardImage = "/resources/Dashboard.png";
     private String profileImage = "/resources/ProfilePage.png";
-    private String button = "/resources/Button.png";
 
     Color boxColor = new Color(217, 240, 241);
     Color iconColor = new Color(127, 201, 255);
@@ -684,7 +734,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
-    private JFrame frame = new JFrame("Login");
+    private JFrame frame;
     private JFrame dashboard;
     private JFrame profile;
     private ImagePanel backgroundPanel;
