@@ -16,6 +16,8 @@ import java.util.Map.Entry;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import java.awt.AWTException;
 import java.awt.Color;
 
 /**
@@ -31,24 +33,33 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() throws IOException{
     	Main.main(null);
-
-        frame = new JFrame("Login");
-        Dimension buttonSize = new Dimension(200, 100); // Example size        
-        setLoginBackground(buttonSize);
-        loginButton(buttonSize);
-        registerButton(buttonSize);
+        login();
         
-        // Add the backgroundPanel to the frame
-        frame.add(backgroundPanel);
-        
-        Dimension imageSize = backgroundPanel.getImageSize();
-        frame.setSize(imageSize);
-        
-        frame.setResizable(false); // Prevent resizing
-        frame.setLocationRelativeTo(null); // Center the frame on the screen
-        
-        frame.pack();
-        frame.setVisible(true);
+    }
+    public void login(){
+    frame = new JFrame("Login");
+    Dimension buttonSize = new Dimension(200, 100); // Example size        
+    setLoginBackground(buttonSize);
+    loginButton(buttonSize);
+    registerButton(buttonSize);
+    
+    // Add the backgroundPanel to the frame
+    frame.add(backgroundPanel);
+    
+    Dimension imageSize = backgroundPanel.getImageSize();
+    frame.setSize(imageSize);
+    
+    frame.setResizable(false); // Prevent resizing
+    frame.setLocationRelativeTo(null); // Center the frame on the screen
+    
+    frame.pack();
+    frame.setVisible(true);
+    }
+    public void setButton(JButton b, int x, int y, int width, int height){
+        b.setBounds(x, y, width, height);
+        b.setBackground(new Color(44, 125, 200));
+        b.setForeground(Color.WHITE);
+        backgroundPanel.add(b);
     }
 
     private void setLoginBackground(Dimension size){
@@ -75,11 +86,7 @@ public class Login extends javax.swing.JFrame {
         jButton1 = new JButton("Login");
         int buttonX = ((backgroundPanel.getWidth() - size.width) / 2)- 150;
         int buttonY = 700;
-        jButton1.setBounds(buttonX, buttonY, size.width, size.height);
-        jButton1.setBackground(new Color(44, 125, 200));
-        jButton1.setText("Login");
-        jButton1.setForeground(Color.WHITE);  
-        backgroundPanel.add(jButton1);
+        setButton(jButton1, buttonX, buttonY, size.width, size.height);
         //backgroundPanel.add(buttonLabel);
 
         // Add ActionListener to the login button
@@ -128,10 +135,7 @@ public class Login extends javax.swing.JFrame {
         jButton2 = new JButton("Register"); // Creates register button
         int registerX = ((backgroundPanel.getWidth() - size.width) / 2) + 150; // Sets the button's x coordinate to 200px more than the login button
         int registerY = 700; // Sets the buttons y coordinate
-        jButton2.setBounds(registerX, registerY, size.width, size.height); // Sets the size and location
-        jButton2.setBackground(new Color(44, 125, 200));
-        jButton2.setForeground(Color.WHITE);
-        backgroundPanel.add(jButton2); // Adds it to the background
+        setButton(jButton2, registerX, registerY, size.width, size.height);
         
         
         // Add ActionListener to register button
@@ -251,8 +255,7 @@ public class Login extends javax.swing.JFrame {
      
      
      private void openHome(User u) throws IOException {
-    	 
-    	
+
          // Create and configure the next window
          JFrame nextFrame = new JFrame("Welcome " + u.getUsername());
          nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -266,34 +269,23 @@ public class Login extends javax.swing.JFrame {
          backgroundPanel.add(jTextArea1);
          
          jButton1 = new JButton("Profile");
-         jButton1.setBounds(5,5,122,122);
-         jButton1.setBackground(new Color(44, 125, 200));
-         jButton1.setForeground(Color.WHITE);  
+         setButton(jButton1, 5, 5, 122, 122);
          backgroundPanel.add(jButton1);
          
          jButton2 = new JButton("Reccomended");
-         jButton2.setBounds(5,132,122,122);
-         jButton1.setBackground(new Color(44, 125, 200));
-         jButton1.setForeground(Color.WHITE);  
+         setButton(jButton2, 5, 132, 122, 122);
          backgroundPanel.add(jButton2);
-         
                 
          jTextField1 = new JTextField("Search");
          jTextField1.setBounds(655,200,600,80);
-         jButton1.setBackground(new Color(44, 125, 200));
-         jButton1.setForeground(Color.WHITE);  
          backgroundPanel.add(jTextField1);
-         
+  
          jButton3 = new JButton("Search");
-         jButton3.setBounds(570,200,80,80);
-         jButton1.setBackground(new Color(44, 125, 200));
-         jButton1.setForeground(Color.WHITE);  
+         setButton(jButton3, 570,200,80,80);
          backgroundPanel.add(jButton3);
          
          jButton4 = new JButton("Enter");
-         jButton4.setBounds(555,800,100,80);
-         jButton1.setBackground(new Color(44, 125, 200));
-         jButton1.setForeground(Color.WHITE);  
+         setButton(jButton4,555,800,100,80);
          backgroundPanel.add(jButton4);
          
          jTextField2 = new JTextField("");
@@ -301,10 +293,12 @@ public class Login extends javax.swing.JFrame {
          backgroundPanel.add(jTextField2);
          
          jButton5 = new JButton("Help");
-         jButton5.setBounds(5,776,122,122);
-         jButton1.setBackground(new Color(44, 125, 200));
-         jButton1.setForeground(Color.WHITE);  
+        setButton(jButton5,5,776,122,122);
          backgroundPanel.add(jButton5);
+         
+         jButton6 = new JButton("Back");
+         setButton(jButton6,220,800,100,80);
+         backgroundPanel.add(jButton6);
          
          PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
          jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
@@ -324,8 +318,14 @@ public class Login extends javax.swing.JFrame {
                 nextFrame.dispose();
             }
          });
+         jButton2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                jTextArea1.setText(null);
+
+            }
+         });
         //Search button
-         jButton3.addActionListener(new ActionListener() {
+        jButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jTextArea1.setText(null);
@@ -355,16 +355,18 @@ public class Login extends javax.swing.JFrame {
                     String[] temp2 = temp[1].split(",");
                     if (Main.bookLookup.containsKey(temp2[0])) {
                         u.rateBook(temp2);
+                        jTextArea1.setText(null);
+                        System.out.println("Test");
+                        
                         try {
                             Main.rewriteUsers();
-                            jTextArea1.setText(null);
+                            
                             Main.userLookup.clear();
                             Main.users.clear();
                             Main.books.clear();
                             Main.getBook();
                             Main.checkMap();
                             Main.getTopBooks();
-
                         } catch (IOException e1) {
 
                             // TODO Auto-generated catch block
@@ -393,6 +395,13 @@ public class Login extends javax.swing.JFrame {
 				}
              }
          });
+        
+        jButton6.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                jTextArea1.setText(null);
+                Main.getTopBooks();
+            } 
+        });
          // Add the backgroundPanel to the nextFrame
          nextFrame.add(backgroundPanel);
          
@@ -410,7 +419,7 @@ public class Login extends javax.swing.JFrame {
          nextFrame.setVisible(true);
      }
      
-     private void openHelp() throws IOException {
+    private void openHelp() throws IOException {
     	 
     	 
     	 ImagePanel backgroundPanel = new ImagePanel(whiteImage);
@@ -447,12 +456,10 @@ public class Login extends javax.swing.JFrame {
      
      }
     private void openRec(User u){
-        frame = new JFrame(u.getUsername());
+        
 
     }    
-    private void setRecBackground(){
-        backgroundPanel = new ImagePanel(dashboardImage);
-    }
+
      private void openProfile(User u) throws IOException{
         profile = new JFrame(u.getUsername());
         setProfileBackground(u);      
@@ -471,10 +478,11 @@ public class Login extends javax.swing.JFrame {
         backgroundPanel.add(jButton1);
         
         jButton2 = new JButton("Home");
-        jButton2.setBounds(5,5,122,122);
-        jButton1.setBackground(new Color(44, 125, 200));
-        jButton1.setForeground(Color.WHITE);  
+        setButton(jButton2,5,5,122,122);
         backgroundPanel.add(jButton2);
+
+        jButton3 = new JButton("Sign out");
+        setButton(jButton3, 5, 776, 122, 122);
 
         jButton1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -511,6 +519,12 @@ public class Login extends javax.swing.JFrame {
             }
         });
         
+        jButton3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                profile.dispose();
+               login();
+            }
+        });
         
 
         profile.add(backgroundPanel);
@@ -730,6 +744,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
