@@ -1,7 +1,6 @@
 
 package antarticagui;
-import antarticagui.Book;
-import antarticagui.User;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,15 +11,15 @@ import java.sql.*;
 import java.util.*;
 public class Main {
   
-  static ArrayList<antarticagui.Book> books = new ArrayList<antarticagui.Book>();
+  static ArrayList<Book> books = new ArrayList<Book>();
   static ArrayList<String> bookData = new ArrayList<String>();
   
-  static ArrayList<antarticagui.User> users = new ArrayList<antarticagui.User>();
+  static ArrayList<User> users = new ArrayList<User>();
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   static Map<String, Integer> bookLookup = new HashMap<String, Integer>();
 
-  static String bookFile = "C:\\Users\\jonah\\Downloads\\test1-Add-read-books\\test1-Add-read-books\\AntarticaGUI\\BookData.csv";
-  static String userFile = "C:\\Users\\jonah\\Downloads\\test1-Add-read-books\\test1-Add-read-books\\AntarticaGUI\\UserInfo.csv";
+  static String bookFile = "C:\\Users\\Dapik\\test1\\test1\\AntarticaGUI\\BookData.csv";
+  static String userFile = "C:\\Users\\Dapik\\test1\\test1\\AntarticaGUI\\UserInfo.csv";
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here
@@ -51,7 +50,7 @@ public class Main {
   public static void signUp (String name, String pass) throws IOException{
 
 	String hashed = pass.hashCode()+"";
-    antarticagui.User temp = new antarticagui.User(name, hashed, "false", "sysBook]0!", "sysBook!");
+    User temp = new User(name, hashed, "false", "sysBook]0!", "sysBook!");
     users.add(temp);
     userLookup.put(name, users.indexOf(temp));
     rewriteUsers();
@@ -83,7 +82,7 @@ public class Main {
 			  String inputLine = inputFile.nextLine(); 
 			  String[] data = inputLine.split(",");
 			  
-			  antarticagui.Book temp = new antarticagui.Book(data[0],data[1],data[2],data[3]);
+			  Book temp = new Book(data[0],data[1],data[2],data[3]);
 			  books.add(temp);
 			  bookLookup.put(data[0], count);			  
 			  count++;
@@ -93,15 +92,15 @@ public class Main {
 		 
 	  }
 	  
-	  static ArrayList<antarticagui.Book> search(ArrayList<antarticagui.Book> books, ArrayList<String> desires){
+	  static ArrayList<Book> search(ArrayList<Book> books, ArrayList<String> desires){
 		   
 		    for (int i = 0; i < books.size()-1; i++){
 		    	books.get(i).calcScore(desires);
 		    }
 		    
-		    Collections.sort(books, Comparator.comparing(antarticagui.Book::getScore));
+		    Collections.sort(books, Comparator.comparing(Book::getScore));
 		    
-		    ArrayList<antarticagui.Book> temp = new ArrayList<antarticagui.Book>();
+		    ArrayList<Book> temp = new ArrayList<Book>();
 		    for (int i = 0; i < 10; i++) {
 		    	temp.add(books.get(i));
 		    }
@@ -109,9 +108,9 @@ public class Main {
 		  }
 	  
 	  
-	  static ArrayList<antarticagui.Book> sort(ArrayList<antarticagui.Book> books){
+	  static ArrayList<Book> sort(ArrayList<Book> books){
 		  
-		    for (int i = 0; i < books.size(); i++){
+		    for (int i = 1; i < books.size(); i++){
 		    	books.get(i).getData(4);
 		    }
 		    
@@ -121,7 +120,7 @@ public class Main {
 		  }
 	  
 	  public static void toMap(String name, String pass, String iA, String ratings, String booksRead) {
-		  antarticagui.User temp = new antarticagui.User(name, pass, iA, ratings, booksRead);
+		  User temp = new User(name, pass, iA, ratings, booksRead);
 	      users.add(temp);
 	      userLookup.put(name, users.size() - 1);
 	  }
@@ -132,7 +131,7 @@ public class Main {
 		  Scanner fileIn = new Scanner(file);
 		  String[] in;
 		  String line;
-		  int length = antarticagui.User.userInfoFileLength();
+		  int length = User.userInfoFileLength();
 		  int counter = 0;
 		  
 		  while (fileIn.hasNext()) {
@@ -159,7 +158,9 @@ public class Main {
 	        System.out.println("Most Popular on Antarctica:");
 
 	        for (int i = 1; i < books.size() - 1; i++) {
-	        	System.out.println(books.get(i).toString());
+				if (books.get(i).getRating() > 0){
+					System.out.println(books.get(i).toString());
+				}	
 	        }
 	        
 	        //System.out.println("Ratings have been updated");
@@ -233,14 +234,7 @@ public class Main {
 		      }
 		    }
 		    
-		    
-		    
-		    // if ((count+0.0)/string.length() > 0.4){
-		    //   return false;
-		    // }
-		    // else{
-		    //   return true;
-		    // }
+
 
 		    return count;
 		  }

@@ -1,6 +1,5 @@
 
 package antarticagui;
-import antarticagui.Book;
 import antarticagui.Main;
 
 import java.sql.*;
@@ -172,8 +171,8 @@ This class is the dashboard for the menu
    /**
     gets a list of books stored in the "database", puts it into an array and gets 10 random books to display
    */
-   public static ArrayList<antarticagui.Book> generate(){
-     ArrayList<antarticagui.Book> temp = new ArrayList<antarticagui.Book>();
+   public static ArrayList<Book> generate(){
+     ArrayList<Book> temp = new ArrayList<Book>();
    
      //Make a copy of books and shuffle it
      temp = new ArrayList<Book>(Main.books);
