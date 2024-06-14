@@ -30,7 +30,6 @@ public class User {
     this.ratings = ratings;
     booksRead = read;
     setReadList();
-   // setRateList();
     setRateList();
     
     
@@ -46,20 +45,7 @@ public class User {
       readList.add(temp[i]); // Stores the books the user has read
     }
   }
- /*  public void setRateList() {
-      String book[] = ratings.split("!"); // Makes an array of each book in ratings
-      for (int i = 0; i < antarticagui.Main.books.size(); i++){
-        try { 
-          String[] temp = book[i].split("]"); // Split the book name and rating into an array
-          if (antarticagui.Main.books.get(i).getTitle().equals(temp[0])){
-          rateList.add(temp[1]); // Add the rating to index i if it's been rated
-          }
-        } catch (Exception e ) {
-          rateList.add("Unrated"); // Add "unrated" to index i if it has not
-        }
-        
-      }
-  }*/
+ 
 
   public void setRateList() {
 

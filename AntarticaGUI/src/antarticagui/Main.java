@@ -19,8 +19,8 @@ public class Main {
   static Map<String, Integer> userLookup = new HashMap<String, Integer>();// Username, index in Users
   static Map<String, Integer> bookLookup = new HashMap<String, Integer>();
 
-  static String bookFile = "C:\\Users\\jonah\\Downloads\\test1-Add-read-books\\test1-Add-read-books\\AntarticaGUI\\BookData.csv";
-  static String userFile = "C:\\Users\\jonah\\Downloads\\test1-Add-read-books\\test1-Add-read-books\\AntarticaGUI\\UserInfo.csv";
+  static String bookFile = "C:\\Users\\jonah\\Documents\\GitHub\\test1\\AntarticaGUI\\BookData.csv";
+  static String userFile = "C:\\Users\\jonah\\Documents\\GitHub\\test1\\AntarticaGUI\\UserInfo.csv";
   
   public static void main(String[] args) throws IOException {
     //Put sql connections/call methods here

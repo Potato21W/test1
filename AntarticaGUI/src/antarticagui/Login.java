@@ -18,7 +18,9 @@
  import java.io.*;
  import java.util.*;
  import java.util.Map.Entry;
- import java.awt.event.ActionEvent;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.awt.event.ActionEvent;
  import java.awt.event.ActionListener;
  import javax.swing.*;
  import java.awt.Color;
@@ -444,11 +446,14 @@
           jTextArea1.setBounds(0, 0, 500, 500);
           backgroundPanel.add(jTextArea1);
           
-          String help1 = "Search Parameters should be seperated with commas and not spaces";
-          String help2 = "To add a rating, type in the bottom box \"rate BookName,rating\" \nand press the button labled \"Enter\"";
-          String help3 = "To add a read book, type in the bottom box \"read BookName\" \nand press the button labled \"Enter\"";
+          String help = "The text box in the centre displays by default top rated books \nand after searching it displays search results";
+          String help1 = "Search Parameters should be separated with commas and not spaces";
           
-          jTextArea1.setText(help1 + "\n\n" + help2 + "\n\n" + help3);
+          String help2 = "To add a rating, type in the bottom box \"rate_BookName,rating\" \nand press the button labelled \"Enter\"";
+    
+        
+          
+          jTextArea1.setText(help + "\n\n" + help1 + "\n\n" + help2 + "\n\n");
           
          // Add the backgroundPanel to the nextFrame
           nextFrame.add(backgroundPanel);
@@ -483,17 +488,81 @@
          jTextArea1.setText(null);
          for (int i = 0; i < u.rateList.size(); i++) {
  
-             if (!u.rateList.get(i).equals("Unrated")) {
+             if (u.rateList.get(i).equals("Unrated")) {
  
-                 if (Integer.parseInt(u.rateList.get(i)) > 3) {
+                continue;
  
-                     likedBooks.add(i);
+             } else if (Integer.parseInt(u.rateList.get(i)) > 3) {
  
-                 }
- 
-             }
+                likedBooks.add(i);
+
+            }
  
          }
+
+        
+
+         ArrayList<Integer> recs = new ArrayList<>();
+    
+         for (int i = 0; i < Main.users.size(); i++) {
+
+            for (int j = 0; j < Main.users.get(i).rateList.size(); j++) {
+
+                if (!Main.users.get(i).rateList.get(j).equals("Unrated")) {
+
+                    if (j == likedBooks.get(0)) {
+                
+
+                        for (int k = 0; k < Main.users.get(i).rateList.size(); k++) {
+                            
+
+                            if (!Main.users.get(i).rateList.get(k).equals("Unrated")) {
+                                
+                                if (Integer.parseInt(Main.users.get(i).rateList.get(k)) > 3) {
+
+                                    recs.add(k + 1);
+
+                                }
+                            
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+         }
+
+         ArrayList<Integer> uRecs = (ArrayList) recs.stream().distinct().collect(Collectors.toList());
+
+
+         for (int i = 0; i < uRecs.size(); i++) {
+
+            for (int j = 0; j < u.rateList.size(); j++) {
+               
+
+                if ((!u.rateList.get(j).equals("Unrated")) && (j == (uRecs.get(0) - 1))) {
+
+                    uRecs.remove(i);
+    
+                }
+
+            }
+            
+
+         }
+         
+
+         System.out.println("Best Recommendations For You:");
+
+	        for (int i = 0; i < uRecs.size(); i++) {
+
+	        	System.out.println(Main.books.get(uRecs.get(i)).toString());
+
+	        }
  
      }
  
@@ -583,6 +652,7 @@
          if (u.readList.get(0).equals(null)){
              System.out.println("You have no read books");
          }
+
          for (int i = 1; i < u.readList.size(); i++){
              String book = u.readList.get(i);
              System.out.println(book + "," + u.rateList.get(Main.bookLookup.get(book) - 1));
