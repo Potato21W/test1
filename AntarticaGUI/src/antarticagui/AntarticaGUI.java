@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package antarticagui;
+import antarticagui.Login;
+import antarticagui.Main;
+import antarticagui.User;
+
 import java.io.*;
 import java.util.Map;
 
@@ -18,7 +22,7 @@ public class AntarticaGUI {
 	
     public static void main(String[] args) throws IOException{
     	System.out.println(User.userInfoFileLength());
-    	Main.getBook();
+    	antarticagui.Main.getBook();
     	Main.checkMap();
     	
     		

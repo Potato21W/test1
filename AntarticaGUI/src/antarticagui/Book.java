@@ -1,4 +1,6 @@
 package antarticagui;
+import antarticagui.Main;
+
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Arrays;
