@@ -1,31 +1,48 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ *
+ * This class handles the GUI of the actual program
  */
 
 package antarticagui;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.lang.Math;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Image;
 import java.io.*;
 import java.util.*;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import java.awt.AWTException;
 import java.awt.Color;
 
-/**
- *
- * 
- */
 public class Login extends javax.swing.JFrame {
-	
+
+private String homeImage = "/resources/HomePage.png";
+private String loginImage = "/resources/LoginPage.png";
+private String profileImage = "/resources/ProfilePage.png";
+Color boxColor = new Color(217, 240, 241);
+Color iconColor = new Color(127, 201, 255);
+private String whiteImage = "/resources/White.jpg";
+private javax.swing.JButton jButton1;
+private javax.swing.JButton jButton2;
+private javax.swing.JButton jButton3;
+private javax.swing.JButton jButton4;
+private javax.swing.JButton jButton5;
+private javax.swing.JButton jButton6;
+// Variables declaration - do not modify//GEN-BEGIN:variables
+private javax.swing.JFrame jFrame1;
+private javax.swing.JFrame jFrame2;
+private javax.swing.JFrame jFrame3;
+private JFrame frame;
+private JFrame profile;
+private ImagePanel backgroundPanel;
+private javax.swing.JPasswordField jPasswordField1;
+private javax.swing.JScrollPane jScrollPane1;
+private javax.swing.JTextArea jTextArea1;
+private javax.swing.JTextField jTextField1;
+private javax.swing.JTextField jTextField2;
+// End of variables declaration//GEN-END:variables
 	
 
     /**
@@ -39,7 +56,7 @@ public class Login extends javax.swing.JFrame {
     public void login(){
     frame = new JFrame("Login");
     Dimension buttonSize = new Dimension(200, 100); // Example size        
-    setLoginBackground(buttonSize);
+    setLoginBackground();
     loginButton(buttonSize);
     registerButton(buttonSize);
     
@@ -56,46 +73,56 @@ public class Login extends javax.swing.JFrame {
     frame.setVisible(true);
     }
     /**
-     * 
+     * Creates a new button and sets its colour
      * @param b The button
      * @param x x coordinate
      * @param y y coordinate
      * @param width The width
      * @param  The height
+     * By Kaya
      */
     public void setButton(JButton b, int x, int y, int width, int height){
         b.setBounds(x, y, width, height);
         b.setBackground(new Color(44, 125, 200));
         b.setForeground(Color.WHITE);
-        backgroundPanel.add(b);
     }
-
-    private void setLoginBackground(Dimension size){
+    /**
+     * Set's up the background of the login page
+     * By Matt K
+     */
+    private void setLoginBackground(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Create an instance of ImagePanel
         backgroundPanel = new ImagePanel(loginImage);
 
         backgroundPanel.setLayout(null); // You may need to set layout as null for absolute positioning
         
+        // Username field
         jTextField1 = new JTextField();
         jTextField1.setBounds(468, 350, 750, 100); // Example: Set position and size
         jTextField1.setBackground(Color.LIGHT_GRAY);
         backgroundPanel.add(jTextField1);
 
+        //Password field
         jPasswordField1 = new JPasswordField();
         jPasswordField1.setBounds(468, 600, 750, 100);
         jPasswordField1.setBackground(Color.LIGHT_GRAY);
         backgroundPanel.add(jPasswordField1);
 
-
     }
+    /**
+     * Creates a button to log in the user
+     * @param size The size of the button
+     * By Matt K
+     */
     private void loginButton(Dimension size){
         //Actual login button
         jButton1 = new JButton("Login");
         int buttonX = ((backgroundPanel.getWidth() - size.width) / 2)- 150;
         int buttonY = 700;
         setButton(jButton1, buttonX, buttonY, size.width, size.height);
-        //backgroundPanel.add(buttonLabel);
+        backgroundPanel.add(jButton1);
+
 
         // Add ActionListener to the login button
         jButton1.addActionListener(new ActionListener() {
@@ -105,18 +132,13 @@ public class Login extends javax.swing.JFrame {
                 String username = jTextField1.getText();
                 String password = new String(jPasswordField1.getPassword());
                 
-                // Do something with username and password
-                System.out.println("Username: " + username);
-                System.out.println("Password: " + password);
+                // Checks if the credentials are correct
                 if (Main.login(username, password)){
-                    System.out.println("working");
-                    System.out.println("Opening window");
-                    User user = Main.users.get(Main.userLookup.get(username));
+                    User user = Main.users.get(Main.userLookup.get(username)); // Stores the current user
                     // Close the current window
                     frame.dispose();
                     // Open another window
                     try {
-                        
                         openHome(user);
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
@@ -126,16 +148,14 @@ public class Login extends javax.swing.JFrame {
                 
                 else {
                     errorMessage("Your username or password was inccorect, please try again");
-
-
                 }
             }
         });
     }
     //Kaya
     /**
-     * 
-     * @param size
+     * Creates a button to register a new user
+     * @param size The size of the button
      * By Kaya
      */
     private void registerButton(Dimension size){
@@ -144,6 +164,7 @@ public class Login extends javax.swing.JFrame {
         int registerX = ((backgroundPanel.getWidth() - size.width) / 2) + 150; // Sets the button's x coordinate to 200px more than the login button
         int registerY = 700; // Sets the buttons y coordinate
         setButton(jButton2, registerX, registerY, size.width, size.height);
+        backgroundPanel.add(jButton2);
         
         
         // Add ActionListener to register button
@@ -177,91 +198,12 @@ public class Login extends javax.swing.JFrame {
         });
     }
     
-    
-    private void openDashboard(User u) throws IOException {
 
-        // Create and configure the next window
-        JFrame nextFrame = new JFrame("Welcome " + u.getUsername());
-        nextFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        // Create an instance of ImagePanel with the second image
-        ImagePanel backgroundPanel = new ImagePanel(generalImage);
-        
-        jTextArea1 = new JTextArea();
-        jTextArea1.setBounds(470, 100, 750, 400);
-        backgroundPanel.add(jTextArea1);
-        
-        jTextField1 = new JTextField();
-        jTextField1.setBounds(470, 550, 750, 100);
-        backgroundPanel.add(jTextField1);
-        
-        jButton1 = new JButton("Enter");
-        Dimension buttonSize = new Dimension(200, 100); // Example size
-        int buttonX = ((backgroundPanel.getWidth() - buttonSize.width) / 2)- 7;
-        int buttonY = 700;
-        jButton1.setBounds(buttonX, buttonY, buttonSize.width, buttonSize.height);
-        backgroundPanel.add(jButton1);
-        
-        PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
-        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
-        
-        System.setOut(outStream);
-        
-        Main.getTopBooks();
-        
-       
-        // Add ActionListener to the button
-        jButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	
-                // Retrieve data
-                String input = jTextField1.getText();
-                //split by comma
-                String temp[] = input.split(",");
-                //lookup book
-                if (Main.bookLookup.containsKey(temp[0])) {
-                	u.rateBook(temp);
-                	try {
-						Main.rewriteUsers();
-						jTextArea1.setText(null);
-						Main.userLookup.clear();
-						Main.users.clear();
-						Main.books.clear();
-						Main.getBook();
-						Main.checkMap();
-				    	Main.getTopBooks();
-				        
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                } else {
-                	System.out.println("404 book doesn't exist");
-                }
-               
-                //add rating for book
-            }
-        });
-        
-        // Add the backgroundPanel to the nextFrame
-        nextFrame.add(backgroundPanel);
-        
-        // Set the frame resizable to false
-        nextFrame.setResizable(false);
-        
-        // Set the size of the nextFrame to match the size of the image
-        Dimension imageSize = backgroundPanel.getImageSize();
-        nextFrame.setSize(imageSize);
-        
-        // Center the nextFrame on the screen
-        nextFrame.setLocationRelativeTo(null);
-        
-        // Display the nextFrame
-        nextFrame.setVisible(true);
-    }
-     
-     
+     /**
+      * Opens up the homepage
+      * @param u The current user
+      * @throws IOException
+      */
      private void openHome(User u) throws IOException {
 
          // Create and configure the next window
@@ -271,39 +213,48 @@ public class Login extends javax.swing.JFrame {
          // Create an instance of ImagePanel with the second image
          ImagePanel backgroundPanel = new ImagePanel(homeImage);
          
+         // Text box to display books
          jTextArea1 = new JTextArea();
          jTextArea1.setEditable(false);
          jTextArea1.setBounds(225, 332, 1392, 359);
          backgroundPanel.add(jTextArea1);
          
+         // Profile button
          jButton1 = new JButton("Profile");
          setButton(jButton1, 5, 5, 122, 122);
          backgroundPanel.add(jButton1);
          
+         // Reccomended button
          jButton2 = new JButton("Reccomended");
          setButton(jButton2, 5, 132, 122, 122);
          backgroundPanel.add(jButton2);
-                
+             
+         // Search bar
          jTextField1 = new JTextField("Search");
          jTextField1.setBounds(655,200,600,80);
          backgroundPanel.add(jTextField1);
   
+         // Search button
          jButton3 = new JButton("Search");
          setButton(jButton3, 570,200,80,80);
          backgroundPanel.add(jButton3);
          
+         // Button to rate new books
          jButton4 = new JButton("Enter");
          setButton(jButton4,555,800,100,80);
          backgroundPanel.add(jButton4);
          
+         // Text box for the user to rate new books
          jTextField2 = new JTextField("");
          jTextField2.setBounds(656,800,700,80);
          backgroundPanel.add(jTextField2);
          
+         // Help button
          jButton5 = new JButton("Help");
         setButton(jButton5,5,776,122,122);
          backgroundPanel.add(jButton5);
          
+         // Back button
          jButton6 = new JButton("Back");
          setButton(jButton6,220,800,100,80);
          backgroundPanel.add(jButton6);
@@ -314,6 +265,7 @@ public class Login extends javax.swing.JFrame {
     	 System.setOut(outStream);
          Main.getTopBooks();
     	 
+         // Opens profile, By Kaya
          jButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	frame.dispose();
@@ -326,13 +278,15 @@ public class Login extends javax.swing.JFrame {
                 nextFrame.dispose();
             }
          });
+         // Opens reccomende, By Jonah
          jButton2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 jTextArea1.setText(null);
+                openRec(u);
 
             }
          });
-        //Search button
+        //Search button, By Matt K
         jButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -350,6 +304,7 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         });
+        // Rates books, By Matt K
         jButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -364,7 +319,6 @@ public class Login extends javax.swing.JFrame {
                     if (Main.bookLookup.containsKey(temp2[0])) {
                         u.rateBook(temp2);
                         jTextArea1.setText(null);
-                        System.out.println("Test");
                         
                         try {
                             Main.rewriteUsers();
@@ -392,6 +346,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
          
+        // Opens help, By MattK
          jButton5.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
@@ -403,7 +358,7 @@ public class Login extends javax.swing.JFrame {
 				}
              }
          });
-        
+        // Back button, By Kaya
         jButton6.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 jTextArea1.setText(null);
@@ -427,12 +382,14 @@ public class Login extends javax.swing.JFrame {
          nextFrame.setVisible(true);
      }
      
+    /**
+     * Help System
+     * By Matt K, Modified by Kaya
+     * @throws IOException
+     */
     private void openHelp() throws IOException {
-    	 
-    	 
     	 ImagePanel backgroundPanel = new ImagePanel(whiteImage);
     	 JFrame nextFrame = new JFrame("Help");
-    	 
 
     	 jTextArea1 = new JTextArea();
     	 jTextArea1.setEditable(false);
@@ -440,10 +397,12 @@ public class Login extends javax.swing.JFrame {
 		 backgroundPanel.add(jTextArea1);
          
     	 String help1 = "Search Parameters should be seperated with commas and not spaces";
-    	 String help2 = "To add a rating, type in the bottom box \"rate BookName,rating\" \nand press the button labled \"Enter\"";
-    	 String help3 = "To add a read book, type in the bottom box \"read BookName\" \nand press the button labled \"Enter\"";
+    	 String help2 = "To add a rating, type in the bottom box \"rate BookName,rating\" \nand press the button labled \"Enter\". Once you've done that, press \"Back\" to return to viewing the top books";
+    	 String help3 = "To add a read book, go to profile and enter the title, then press \"Mark as read\"";
+         String help4 = "When searching for a book, spelling mistakes can be handled, but your input must be spelled correctly when rating or marking one as read";
+         String help5 = "The \"Sign out\" button is available from the profile";
     	 
-    	 jTextArea1.setText(help1 + "\n\n" + help2 + "\n\n" + help3);
+    	 jTextArea1.setText(help1 + "\n\n" + help2 + "\n\n" + help3 + "\n\n" + help4 + "\n\n" + help5);
     	 
 		// Add the backgroundPanel to the nextFrame
          nextFrame.add(backgroundPanel);
@@ -463,22 +422,91 @@ public class Login extends javax.swing.JFrame {
          nextFrame.setVisible(true);
      
      }
+     /**
+      * Reccomends the user books
+      * @param u The current user
+      * By Jonah
+      */
+    private void openRec(User u) {
+ 
+        ArrayList<Integer> likedBooks = new ArrayList<>(); // Arraylist of books the user has rated 4+
+        
+        jTextArea1.setText(null);
+        for (int i = 0; i < u.rateList.size(); i++) {
 
+            if (u.rateList.get(i).equals("Unrated")) {
+
+                continue;
+
+            } else if (Integer.parseInt(u.rateList.get(i)) > 3) {
+
+            likedBooks.add(i);
+
+            }
+
+        }
+
+        ArrayList<Integer> recs = new ArrayList<>();
+        // Goes through users to find ones with similar ratings
+        for (int i = 0; i < Main.users.size(); i++) {
+
+            for (int j = 0; j < Main.users.get(i).rateList.size(); j++) {
+
+                if (!Main.users.get(i).rateList.get(j).equals("Unrated")) {
+
+                    if (j == likedBooks.get(0)) {
+
+                        for (int k = 0; k < Main.users.get(i).rateList.size(); k++) {
+                            
+                            if (!Main.users.get(i).rateList.get(k).equals("Unrated")) {
+                                
+                                if (Integer.parseInt(Main.users.get(i).rateList.get(k)) > 3) {
+
+                                    recs.add(k + 1);
+
+                                }                          
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        ArrayList<Integer> uRecs = (ArrayList) recs.stream().distinct().collect(Collectors.toList());
+
+        for (int i = 0; i < uRecs.size(); i++) {
+            for (int j = 0; j < u.rateList.size(); j++) {
+                if ((!u.rateList.get(j).equals("Unrated")) && (j == (uRecs.get(0) - 1))) {
+                    uRecs.remove(i);
+                }
+            }
+        }
+        System.out.println("Best Recommendations For You:");
+
+        for (int i = 0; i < uRecs.size(); i++) {
+
+            System.out.println(Main.books.get(uRecs.get(i)).toString());
+
+        }
+ 
+     }
+
+
+     /**
+      * Opens up the profile
+      * @param u The current user
+      * @throws IOException
+      */
      private void openProfile(User u) throws IOException{
         profile = new JFrame(u.getUsername());
         setProfileBackground(u);      
-                               
-        /*for (int i = 0; i < u.readList.size(); i++){
-            readTable.setValueAt(u.readList.get(i), i, 0);
-        }    */   
         
+        //Prints out read books
         printRead(u);  
         
 
         jButton1 = new JButton("Mark as read");
-        jButton1.setBounds(jTextField1.getX()+jTextField1.getWidth()+20, jTextField1.getY(), 200, 100);
-        jButton1.setBackground(new Color(44, 125, 200));
-        jButton1.setForeground(Color.WHITE);  
+        setButton(jButton1, jTextField1.getX()+jTextField1.getWidth()+20, jTextField1.getY(), 200, 100);
         backgroundPanel.add(jButton1);
         
         jButton2 = new JButton("Home");
@@ -487,11 +515,13 @@ public class Login extends javax.swing.JFrame {
 
         jButton3 = new JButton("Sign out");
         setButton(jButton3, 5, 776, 122, 122);
+        backgroundPanel.add(jButton3);
 
+        //Marks a new book as read
         jButton1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String input = jTextField1.getText();
-                if (antarticagui.Main.bookLookup.containsKey(input)) {
+                if (Main.bookLookup.containsKey(input)) {
                     u.addHasRead(input);
                     int index = Main.bookLookup.get(input);
                     System.out.println(input + " , " + u.rateList.get(index));
@@ -505,7 +535,7 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         });
-        
+        // Returns to home
         jButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -524,6 +554,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         
+        // Logs out
         jButton3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 profile.dispose();
@@ -548,11 +579,19 @@ public class Login extends javax.swing.JFrame {
        // Display the dashboard
        profile.setVisible(true);
     }
-    private void printRead(antarticagui.User u){
+
+    /**
+     * Prints out the books the user has read
+     * @param u
+     */
+    private void printRead(User u){
+        // Sets System to print to jTextArea1
         PrintStream outStream = new PrintStream( new TextAreaOutputStream(jTextArea1));
         System.setOut(outStream);
+
         jTextArea1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
         jTextArea1.setEditable(false);
+        // Checks if readList is empty
         if (u.readList.get(0).equals(null)){
             System.out.println("You have no read books");
         }
@@ -571,11 +610,13 @@ public class Login extends javax.swing.JFrame {
         profile.setDefaultCloseOperation(EXIT_ON_CLOSE);
         backgroundPanel = new ImagePanel(profileImage);
         
+        // Creates text box to display read books
         jTextArea1 = new JTextArea();
         jTextArea1.setBounds(backgroundPanel.getWidth()/4 -80, 250, 3*backgroundPanel.getWidth()/4 -150, 400);
         jTextArea1.setBackground(boxColor);
         backgroundPanel.add(jTextArea1);
 
+        // Creates text box for the user to add new read books
         jTextField1 = new JTextField();
         jTextField1.setBounds(jTextArea1.getX(), 700, jTextArea1.getWidth(), 100);
         jTextArea1.setBackground(boxColor);
@@ -693,81 +734,12 @@ public class Login extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-					new Login().setVisible(true);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
-    }
+    
     
     public void printTextField(String text, JTextArea textArea) {
         textArea.setText(text);
     }
-    
-    public static void getRandBook(int r) {
-    	
-    }
 
-    private String homeImage = "/resources/HomePage.png";
-    private String loginImage = "/resources/LoginPage.png";
-    private String generalImage = "/resources/GeneralPage.png";
-    private String dashboardImage = "/resources/Dashboard.png";
-    private String profileImage = "/resources/ProfilePage.png";
 
-    Color boxColor = new Color(217, 240, 241);
-    Color iconColor = new Color(127, 201, 255);
-    private String whiteImage = "/resources/White.jpg";
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFrame jFrame1;
-    private javax.swing.JFrame jFrame2;
-    private javax.swing.JFrame jFrame3;
-    private JFrame frame;
-    private JFrame dashboard;
-    private JFrame profile;
-    private ImagePanel backgroundPanel;
-    private JTable readTable;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    // End of variables declaration//GEN-END:variables
+
 }

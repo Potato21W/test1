@@ -118,6 +118,7 @@ public class User {
     rateList.set(antarticagui.Main.bookLookup.get(s[0]), s[1]);
     ratings += s[0]+ "]" + s[1] + "!";
 
+    Main.books.get(Main.bookLookup.get(s[0])).addRating(s[1]);
   }
 
   public void toDatabase() throws IOException {
